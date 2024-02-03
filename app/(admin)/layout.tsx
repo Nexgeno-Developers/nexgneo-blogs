@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import Sidebar from "./admin/_components/sidebar";
 import TopBar from "./admin/_components/topbar";
-import { getUser } from "@/actions/getUser";
 import { db } from "@/lib/db";
 export const metadata = {
   title: "Admin",
