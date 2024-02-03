@@ -1,9 +1,9 @@
 "use client";
 
+import { SearchInput } from "@/components/search-input";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { SearchInput } from "../../../components/search-input";
 import { usePathname } from "next/navigation";
 
 const Navbar = () => {
