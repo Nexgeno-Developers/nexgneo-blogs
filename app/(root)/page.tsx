@@ -21,9 +21,9 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
   return (
     <>
       <section>
-        <div className="px-6 pt-6 md:hidden md:mb-0 block">
+        {/* <div className="px-6 pt-6 md:hidden md:mb-0 block">
           <SearchInput />
-        </div>
+        </div> */}
         <div className="container">
           <div className="py-6 space-y-4">
             <CategoriesList items={categories} />
