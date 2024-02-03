@@ -9,10 +9,12 @@ interface CategoriesListProps {
 
 export const CategoriesList = ({ items }: CategoriesListProps) => {
   return (
-    <div className="flex items-center gap-x-2 overflow-x-auto pb-2">
-      {items.map((item) => (
-        <CategoryItem key={item.id} label={item.name} value={item.id} />
-      ))}
-    </div>
+    <>
+      <div className="flex items-center gap-x-2 overflow-x-auto pb-2">
+        {items.map((item) => (
+          <CategoryItem key={item.id} label={item.name} value={item.id} />
+        ))}
+      </div>
+    </>
   );
 };
