@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -24,10 +25,13 @@ const Navbar = () => {
                 />
               </div>
             </Link>
+
             {isSearchPage && (
-              <div className="hidden md:block">
-                <SearchInput />
-              </div>
+              <Suspense>
+                <div className="hidden md:block">
+                  <SearchInput />
+                </div>
+              </Suspense>
             )}
             <div className="flex items-center gap-10">
               <Link href="tel:+919004466166">+91 90044 66166</Link>
