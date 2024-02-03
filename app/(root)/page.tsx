@@ -11,7 +11,7 @@ interface HomePageProps {
   };
 }
 
-export default async function Home({ searchParams }: HomePageProps) {
+const HomePage = async ({ searchParams }: HomePageProps) => {
   const categories = await getCategories();
 
   const posts = await getPosts({
@@ -33,4 +33,6 @@ export default async function Home({ searchParams }: HomePageProps) {
       </section>
     </>
   );
-}
+};
+
+export default HomePage;
