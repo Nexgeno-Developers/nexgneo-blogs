@@ -40,3 +40,26 @@ export async function POST(req: Request) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const categoryId = searchParams.get("categoryId") || undefined;
+    const isFeatured = searchParams.get("isPublished");
+
+    const posts = await db.post.findMany({
+      where: {
+        categoryId,
+        isPublished: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return NextResponse.json(posts);
+  } catch (error) {
+    console.log("[POSTS_GET]", error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}

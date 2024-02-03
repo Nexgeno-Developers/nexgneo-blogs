@@ -41,17 +41,17 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // const postsCount = await db.post.count({
-    //   where: {
-    //     categoryId: params.categoryId,
-    //   },
-    // });
+    const postsCount = await db.post.count({
+      where: {
+        categoryId: params.categoryId,
+      },
+    });
 
-    // if (postsCount > 0) {
-    //   return new NextResponse("Cannot delete category with associated posts", {
-    //     status: 400,
-    //   });
-    // }
+    if (postsCount > 0) {
+      return new NextResponse("Cannot delete category with associated posts", {
+        status: 400,
+      });
+    }
 
     const category = await db.category.delete({
       where: {
