@@ -16,7 +16,14 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isPublicRoute = publicRoutes.some((route) => {
+    // If the route contains a wildcard, check if it matches the start of the pathname
+    if (route.includes(":path")) {
+      return nextUrl.pathname.startsWith(route.split(":path")[0]);
+    }
+    // Otherwise, check for an exact match
+    return nextUrl.pathname === route;
+  });
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {

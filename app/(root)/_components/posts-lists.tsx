@@ -14,7 +14,7 @@ export const PostsList = ({ items }: PostsListProps) => {
         {items.map((item) => (
           <div key={item.id} className="grid lg:grid-cols-2 grid-cols-1 gap-8">
             <div className="">
-              <Link href={`/${item.slug}`} className="mt-6">
+              <Link href={`/posts/${item.slug}`} className="mt-6">
                 <h2 className="md:text-2xl text-lg font-semibold text-black mb-3">
                   {item.title}
                 </h2>
@@ -25,7 +25,7 @@ export const PostsList = ({ items }: PostsListProps) => {
               </Link>
             </div>
             <div className="">
-              <Link href={`/${item.slug}`}>
+              <Link href={`/posts/${item.slug}`}>
                 <div className="relative aspect-video">
                   <Image
                     src={`${item.image}`}
