@@ -20,17 +20,15 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <SessionProvider session={session}>
-        <div className="flex">
-          <div className="sidebar p-5 min-h-screen ">
-            <Sidebar name={user?.name} image={user?.image} />
-          </div>
-          <div className="content p-5">
-            <TopBar />
-            <div className="pt-6">{children}</div>
-          </div>
+      <div className="flex">
+        <div className="sidebar p-5 min-h-screen ">
+          <Sidebar name={user?.name} image={user?.image} />
         </div>
-      </SessionProvider>
+        <div className="content p-5">
+          <TopBar />
+          <div className="pt-6">{children}</div>
+        </div>
+      </div>
     </>
   );
 };
