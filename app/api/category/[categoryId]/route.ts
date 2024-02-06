@@ -47,7 +47,7 @@ export async function DELETE(
       },
     });
 
-    if (postsCount > 0) {
+    if (postsCount) {
       return new NextResponse("Cannot delete category with associated posts", {
         status: 400,
       });

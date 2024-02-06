@@ -76,9 +76,23 @@ model Post {
   authorId    String    @db.ObjectId
   author      User      @relation(fields: [authorId], references: [id])
 
+  postVisitor PostVisitor[]
+
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
 
   @@fulltext([title])
 }
+
+model PostVisitor {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  ip          String?
+  postId      String    @db.ObjectId
+
+  post        Post      @relation(fields: [postId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+

@@ -20,6 +20,9 @@ export const getPosts = async ({
         },
         categoryId,
       },
+      include: {
+        postVisitor: true,
+      },
       orderBy: {
         createdAt: "desc",
       },

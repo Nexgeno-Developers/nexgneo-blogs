@@ -20,7 +20,7 @@ const TopBar = () => {
         <div className="flex items-center gap-5">
           <div className="flex gap-5 items-center">
             <MdPublic
-              onClick={() => router.push("/blog")}
+              onClick={() => router.push("/")}
               className="cursor-pointer"
               size={20}
             />
