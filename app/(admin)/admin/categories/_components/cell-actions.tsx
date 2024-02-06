@@ -8,13 +8,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Copy, Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
+import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Category } from "@prisma/client";
-import Link from "next/link";
 import { AlertModal } from "@/components/modal/alert-modal";
 
 interface CellActionsProps {
@@ -39,12 +38,6 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
       setOpen(false);
     }
   };
-
-  const onCopy = (id: string) => {
-    navigator.clipboard.writeText(id);
-    toast.success("Post URL copied to clipboard.");
-  };
-
   return (
     <>
       <AlertModal

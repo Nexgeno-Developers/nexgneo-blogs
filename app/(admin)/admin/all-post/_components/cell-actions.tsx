@@ -89,13 +89,17 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => onCopy(`/blog/${data.id}`)}>
+          <DropdownMenuItem
+            onClick={() =>
+              onCopy(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${data.slug}`)
+            }
+          >
             <Copy className="mr-2 h-4 w-4" /> Copy URL
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Link
               className="flex items-center"
-              href={`/blog/${data.id}`}
+              href={`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${data.slug}`}
               target="_blank"
             >
               <Eye className="mr-2 h-4 w-4" /> View

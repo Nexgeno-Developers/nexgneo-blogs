@@ -6,7 +6,8 @@ import { BsFillPostcardFill } from "react-icons/bs";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { usePathname } from "next/navigation";
-import { User } from "@prisma/client";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { UserRole } from "@prisma/client";
 
 interface SidebarProps {
   name?: string | null;
@@ -15,6 +16,7 @@ interface SidebarProps {
 
 const Sidebar = ({ name, image }: SidebarProps) => {
   const pathname = usePathname();
+  const user = useCurrentUser();
 
   const menuItems = [
     {
@@ -89,29 +91,31 @@ const Sidebar = ({ name, image }: SidebarProps) => {
             </li>
           ))}
 
-          <li>
-            <span className="font-bold text-xs my-2">Admin</span>
-            <Link
-              href="/admin/user-management"
-              className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
-                pathname === "/admin/user-management" &&
-                " text-[#17c1e8] font-semibold shadow-lg"
-              } `}
-            >
-              <FaUser />
-              User Management
-            </Link>
-            <Link
-              href="/admin/all-post"
-              className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
-                pathname === "/admin/all-post" &&
-                "text-[#17c1e8] font-semibold shadow-lg"
-              } `}
-            >
-              <BsFillPostcardFill />
-              All Post
-            </Link>
-          </li>
+          {user?.role === UserRole.ADMIN && (
+            <li>
+              <span className="font-bold text-xs my-2">Admin</span>
+              <Link
+                href="/admin/user-management"
+                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
+                  pathname === "/admin/user-management" &&
+                  " text-[#17c1e8] font-semibold shadow-lg"
+                } `}
+              >
+                <FaUser />
+                User Management
+              </Link>
+              <Link
+                href="/admin/all-post"
+                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
+                  pathname === "/admin/all-post" &&
+                  "text-[#17c1e8] font-semibold shadow-lg"
+                } `}
+              >
+                <BsFillPostcardFill />
+                All Post
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </>

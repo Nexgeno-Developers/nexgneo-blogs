@@ -6,8 +6,16 @@ import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./_components/columns";
 import { getUsers } from "@/actions/getUsers";
 import Link from "next/link";
+import { currentUser } from "@/lib/auth";
+import { UserRole } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 const AdminClient = async () => {
+  const user = await currentUser();
+
+  if (user?.role !== UserRole.ADMIN) {
+    redirect("/admin");
+  }
   const users = await getUsers();
   return (
     <>
