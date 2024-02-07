@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { PostVisitor } from "@prisma/client";
-import { Eye, View } from "lucide-react";
+import { Eye } from "lucide-react";
 
 interface ClientProps {
   id?: string;

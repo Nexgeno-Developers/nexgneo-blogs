@@ -26,13 +26,13 @@ const Navbar = () => {
               </div>
             </Link>
 
-            {isSearchPage && (
+            {/* {isSearchPage && (
               <Suspense>
                 <div className="hidden md:block">
                   <SearchInput />
                 </div>
               </Suspense>
-            )}
+            )} */}
             <div className="flex items-center gap-10">
               <Link href="tel:+919004466166">+91 90044 66166</Link>
             </div>

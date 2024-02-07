@@ -30,9 +30,15 @@ const formSchema = z.object({
   title: z.string().min(3, {
     message: "Title  is required",
   }),
-  slug: z.string().min(3, {
-    message: "Slug is required",
-  }),
+  slug: z
+    .string()
+    .min(3, {
+      message: "Slug is required",
+    })
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+      message:
+        "Invalid slug format. Slugs can only contain lowercase letters, numbers, and hyphens.",
+    }),
   description: z.string().min(3, {
     message: "Description  is required",
   }),
@@ -65,7 +71,7 @@ const AddPostForm: React.FC<AddPostFormProps> = ({ options }) => {
     },
   });
 
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -219,7 +225,7 @@ const AddPostForm: React.FC<AddPostFormProps> = ({ options }) => {
                 )}
               />
               <div className="mt-7 text-end">
-                <Button type="submit" disabled={!isValid || isSubmitting}>
+                <Button type="submit" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

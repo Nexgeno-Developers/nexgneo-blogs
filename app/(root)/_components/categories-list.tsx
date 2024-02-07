@@ -13,10 +13,7 @@ export const CategoriesList = ({ items }: CategoriesListProps) => {
   return (
     <>
       <Suspense>
-        <div className="px-6 pt-6 md:hidden md:mb-0 block">
-          <SearchInput />
-        </div>
-        <div className="flex items-center gap-x-2 overflow-x-auto pb-2">
+        <div className="flex flex-col gap-2 pb-2 mt-5">
           {items.map((item) => (
             <CategoryItem key={item.id} label={item.name} value={item.id} />
           ))}

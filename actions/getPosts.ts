@@ -11,8 +11,6 @@ export const getPosts = async ({
   categoryId,
 }: getPosts): Promise<Post[]> => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
     const posts = await db.post.findMany({
       where: {
         isPublished: true,
@@ -21,9 +19,6 @@ export const getPosts = async ({
           mode: "insensitive",
         },
         categoryId,
-      },
-      include: {
-        postVisitor: true,
       },
       orderBy: {
         createdAt: "desc",

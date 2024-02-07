@@ -13,9 +13,6 @@ export const metadata: Metadata = {
     template: "%s - Nexgeno Technology",
   },
   description: "Nexgeno Technology Private Limited Company",
-  twitter: {
-    card: "summary_large_image",
-  },
 };
 
 export default async function RootLayout({
