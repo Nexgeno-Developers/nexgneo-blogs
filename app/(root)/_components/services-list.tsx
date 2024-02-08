@@ -37,7 +37,7 @@ export const ServicesList = ({ items }: PostsListProps) => {
                     />
                     <div className="absolute inset-0 bg-black opacity-70 rounded-md flex items-center justify-center">
                       <h3 className="text-white relative z-50 text-3xl">
-                        Services Title
+                        {item.title}
                       </h3>
                     </div>
                   </div>
