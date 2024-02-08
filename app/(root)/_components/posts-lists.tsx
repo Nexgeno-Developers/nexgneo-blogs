@@ -37,10 +37,10 @@ export const PostsList = ({ items }: PostsListProps) => {
                     <Clock className="mr-2" />
                     {format(item?.createdAt!, "MMMM do, yyyy")}
                   </Badge>
-                  <Badge variant="secondary">
+                  {/* <Badge variant="secondary">
                     <Eye className="mr-3" />
                     {item?.views}
-                  </Badge>
+                  </Badge> */}
                 </div>
 
                 <h2 className="md:text-2xl text-lg font-semibold text-black line-clamp-2">

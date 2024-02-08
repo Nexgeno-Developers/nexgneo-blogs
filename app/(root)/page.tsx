@@ -67,10 +67,10 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
                   <Clock className="mr-3" />
                   {format(latestPost?.createdAt!, "MMMM do, yyyy")}
                 </Badge>
-                <Badge variant="secondary">
+                {/* <Badge variant="secondary">
                   <Eye className="mr-3" />
                   {latestPost?.views}
-                </Badge>
+                </Badge> */}
               </div>
 
               <h2 className="text-2xl font-bold  line-clamp-2">
