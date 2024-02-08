@@ -38,8 +38,10 @@ export const Client = ({
     const updateViews = async () => {
       try {
         await axios.patch(`/api/posts/${id}/views`);
+        toast.success("posted");
       } catch (error) {
         console.error("Error updating views:", error);
+        toast.error(" not posted");
       }
     };
 

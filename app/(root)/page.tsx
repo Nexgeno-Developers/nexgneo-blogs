@@ -49,40 +49,46 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
         </div>
 
         <div className="container">
-          <Link
-            href={`/posts/${latestPost.slug}`}
-            className="grid md:grid-cols-2 grid-cols-1 gap-8"
-          >
-            <div className="relative aspect-video ">
-              <Image
-                alt="blog img"
-                fill
-                src={latestPost.image}
-                className="rounded-2xl hover:grayscale transition"
-              />
+          {posts.length === 0 ? (
+            <div className="text-center text-2xl text-muted-foreground mt-10 min-h-[10vh]">
+              No Blogs found
             </div>
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-3">
-                <Badge variant="secondary">
-                  <Clock className="mr-3" />
-                  {format(latestPost?.createdAt!, "MMMM do, yyyy")}
-                </Badge>
-                {/* <Badge variant="secondary">
-                  <Eye className="mr-3" />
-                  {latestPost?.views}
-                </Badge> */}
+          ) : (
+            <Link
+              href={`/posts/${latestPost.slug}`}
+              className="grid md:grid-cols-2 grid-cols-1 gap-8"
+            >
+              <div className="relative aspect-video ">
+                <Image
+                  alt="blog img"
+                  fill
+                  src={latestPost.image}
+                  className="rounded-2xl hover:grayscale transition"
+                />
               </div>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-3">
+                  <Badge variant="secondary">
+                    <Clock className="mr-3" />
+                    {format(latestPost?.createdAt!, "MMMM do, yyyy")}
+                  </Badge>
+                  {/* <Badge variant="secondary">
+                <Eye className="mr-3" />
+                {latestPost?.views}
+              </Badge> */}
+                </div>
 
-              <h2 className="text-2xl font-bold  line-clamp-2">
-                {latestPost.title}
-              </h2>
-              <p className=" line-clamp-3">{latestPost.description}</p>
-              <div className="flex items-center  gap-2 hover:text-red-600 hover:gap-4 transition-all  font-bold">
-                Read More
-                <ArrowRight className="h-4 w-4" />
+                <h2 className="text-2xl font-bold  line-clamp-2">
+                  {latestPost.title}
+                </h2>
+                <p className=" line-clamp-3">{latestPost.description}</p>
+                <div className="flex items-center  gap-2 hover:text-red-600 hover:gap-4 transition-all  font-bold">
+                  Read More
+                  <ArrowRight className="h-4 w-4" />
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          )}
         </div>
         <div className="container mt-10">
           <div className="mb-5 ">
