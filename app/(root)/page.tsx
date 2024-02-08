@@ -4,12 +4,13 @@ import { getPosts } from "@/actions/getPosts";
 import { PostsList } from "./_components/posts-lists";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Clock } from "lucide-react";
+import { ArrowRight, Clock, Eye } from "lucide-react";
 import { format } from "date-fns";
 import Link from "next/link";
 import { SearchInput } from "@/components/search-input";
 import { EnquireForm } from "./_components/enquire-form";
 import { ServicesList } from "./_components/services-list";
+import { db } from "@/lib/db";
 
 interface HomePageProps {
   searchParams: {
@@ -21,6 +22,12 @@ interface HomePageProps {
 const HomePage = async ({ searchParams }: HomePageProps) => {
   const categories = await getCategories();
 
+  const services = await db.services.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
   const posts = await getPosts({
     ...searchParams,
   });
@@ -30,34 +37,47 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
   return (
     <>
       <section className="py-10">
-        <div className="container relative">
-          <Link href={`/posts/${latestPost.slug}`}>
+        <div className="pb-20">
+          <h1 className="text-center text-4xl font-semibold mb-3">
+            Nexgneo Blog
+          </h1>
+          <p className="text-center">
+            Latest news, insights, and trends in the world of technology. Our
+            team of experts offers actionable <br /> advice to leverage
+            technology and drive business success.
+          </p>
+        </div>
+
+        <div className="container">
+          <Link
+            href={`/posts/${latestPost.slug}`}
+            className="grid md:grid-cols-2 grid-cols-1 gap-8"
+          >
             <div className="relative aspect-video ">
               <Image
                 alt="blog img"
                 fill
                 src={latestPost.image}
-                className="rounded-2xl"
+                className="rounded-2xl hover:grayscale transition"
               />
             </div>
-            <div className="absolute inset-0 px-5">
-              <div className="absolute inset-x-[16px] rounded-b-2xl bottom-0 h-2/5 bg-black opacity-80"></div>
-            </div>
-            <div className="flex flex-col gap-4 absolute left-10 max-w-2xl bottom-5 ">
-              <div>
-                <Badge variant="secondary" className="py-2 px-4">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-3">
+                <Badge variant="secondary">
                   <Clock className="mr-3" />
                   {format(latestPost?.createdAt!, "MMMM do, yyyy")}
                 </Badge>
+                <Badge variant="secondary">
+                  <Eye className="mr-3" />
+                  {latestPost?.views}
+                </Badge>
               </div>
 
-              <h1 className="text-2xl font-bold text-white line-clamp-2">
+              <h2 className="text-2xl font-bold  line-clamp-2">
                 {latestPost.title}
-              </h1>
-              <p className="text-white line-clamp-3">
-                {latestPost.description}
-              </p>
-              <div className="flex items-center text-white gap-2 hover:text-red-600 hover:gap-4 transition-all  font-bold">
+              </h2>
+              <p className=" line-clamp-3">{latestPost.description}</p>
+              <div className="flex items-center  gap-2 hover:text-red-600 hover:gap-4 transition-all  font-bold">
                 Read More
                 <ArrowRight className="h-4 w-4" />
               </div>
@@ -96,7 +116,7 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
               Services
             </span>
           </div>
-          <ServicesList items={posts} />
+          <ServicesList items={services} />
         </div>
       </section>
 

@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Post } from "@prisma/client";
 import { format } from "date-fns";
-import { ArrowRight, Clock } from "lucide-react";
+import { ArrowRight, Clock, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -32,10 +32,14 @@ export const PostsList = ({ items }: PostsListProps) => {
                 href={`/posts/${item.slug}`}
                 className="flex flex-col gap-3 group"
               >
-                <div>
-                  <Badge className="">
+                <div className="flex items-center gap-3">
+                  <Badge variant="secondary" className="">
                     <Clock className="mr-2" />
                     {format(item?.createdAt!, "MMMM do, yyyy")}
+                  </Badge>
+                  <Badge variant="secondary">
+                    <Eye className="mr-3" />
+                    {item?.views}
                   </Badge>
                 </div>
 

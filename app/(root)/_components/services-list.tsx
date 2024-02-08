@@ -1,5 +1,5 @@
 "use client";
-import { Post } from "@prisma/client";
+import { Post, Services } from "@prisma/client";
 import {
   Carousel,
   CarouselContent,
@@ -8,9 +8,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import Link from "next/link";
 
 interface PostsListProps {
-  items: Post[];
+  items: Services[];
 }
 
 export const ServicesList = ({ items }: PostsListProps) => {
@@ -26,14 +27,21 @@ export const ServicesList = ({ items }: PostsListProps) => {
           <CarouselContent>
             {items.map((item) => (
               <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
-                <div className="relative aspect-video">
-                  <Image
-                    alt="services img"
-                    fill
-                    src={item.image}
-                    className="rounded-md"
-                  />
-                </div>
+                <Link href={item.url}>
+                  <div className="relative aspect-video">
+                    <Image
+                      alt="services img"
+                      fill
+                      src={item.image}
+                      className="rounded-md"
+                    />
+                    <div className="absolute inset-0 bg-black opacity-70 rounded-md flex items-center justify-center">
+                      <h3 className="text-white relative z-50 text-3xl">
+                        Services Title
+                      </h3>
+                    </div>
+                  </div>
+                </Link>
               </CarouselItem>
             ))}
           </CarouselContent>

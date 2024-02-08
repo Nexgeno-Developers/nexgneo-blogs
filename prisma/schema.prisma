@@ -68,6 +68,7 @@ model Post {
   image       String
   metaTitle   String
   metaDesc    String
+  views       Int       @default(0)
   isPublished Boolean   @default(false)
 
   categoryId  String    @db.ObjectId
@@ -76,8 +77,6 @@ model Post {
   authorId    String    @db.ObjectId
   author      User      @relation(fields: [authorId], references: [id])
 
-  postVisitor PostVisitor[]
-
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -85,14 +84,28 @@ model Post {
   @@fulltext([title])
 }
 
-model PostVisitor {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  ip          String?
-  postId      String    @db.ObjectId
 
-  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+
+
+model Leads {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String
+  country  String
+  message  String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
+
+
+model Services {
+  id         String @id @default(auto()) @map("_id")  @db.ObjectId
+  title      String
+  image      String
+  url        String
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

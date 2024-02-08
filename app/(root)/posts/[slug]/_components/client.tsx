@@ -6,9 +6,8 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
-import toast from "react-hot-toast";
-import { PostVisitor } from "@prisma/client";
 import { Eye } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface ClientProps {
   id?: string;
@@ -20,7 +19,7 @@ interface ClientProps {
   avatar?: string | null;
   author?: string | null;
   createdAt?: Date;
-  views: PostVisitor[];
+  views?: number;
 }
 
 export const Client = ({
@@ -32,34 +31,20 @@ export const Client = ({
   category,
   avatar,
   author,
-  createdAt,
   views,
+  createdAt,
 }: ClientProps) => {
-  const postId = id;
-
-  const isMountedRef = useRef(true);
-
   useEffect(() => {
-    const visitor = async () => {
+    const updateViews = async () => {
       try {
-        const postData = { postId };
-        if (isMountedRef.current) {
-          const storedPostIds = JSON.parse(Cookies.get("postIds") || "[]");
-          if (!storedPostIds.includes(postId)) {
-            const updatedPostIds = [...storedPostIds, postId];
-            Cookies.set("postIds", JSON.stringify(updatedPostIds));
-            await axios.post(`/api/views`, postData);
-          }
-        }
+        await axios.patch(`/api/posts/${id}/views`);
       } catch (error) {
-        console.log("Request Error");
+        console.error("Error updating views:", error);
       }
     };
-    visitor();
-    return () => {
-      isMountedRef.current = false;
-    };
-  }, [postId]);
+
+    updateViews();
+  }, [id]);
 
   return (
     <>
@@ -89,7 +74,7 @@ export const Client = ({
                   <p>{format(createdAt!, "MMMM do, yyyy")}</p>
                   <span className="flex items-center gap-2">
                     <Eye />
-                    {views.length} views
+                    {views} views
                   </span>
                 </div>
               </div>

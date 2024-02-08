@@ -26,6 +26,9 @@ const formSchema = z.object({
   email: z.string().min(3, {
     message: "Email is required",
   }),
+  country: z.string().min(3, {
+    message: "country is required",
+  }),
   message: z.string().min(3, {
     message: "Message is required",
   }),
@@ -39,6 +42,7 @@ export const ContactForm = () => {
     defaultValues: {
       name: "",
       email: "",
+      country: "",
       message: "",
     },
   });
@@ -47,10 +51,10 @@ export const ContactForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/contact`, values);
+      await axios.post(`/api/leads`, values);
+      form.reset();
+      toast.success("Message Send Successfully");
       router.refresh();
-      router.push("/");
-      toast.success("Message Send");
     } catch (error: any) {
       toast.error("Something went wrong.");
     }
@@ -91,6 +95,24 @@ export const ContactForm = () => {
                     disabled={isSubmitting}
                     placeholder="Email"
                     type="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Country</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isSubmitting}
+                    placeholder="Country"
+                    type="text"
                     {...field}
                   />
                 </FormControl>

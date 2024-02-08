@@ -1,12 +1,15 @@
 "use client";
 import Image from "next/image";
-import { MdDashboard, MdOutlineSettings } from "react-icons/md";
+import { MdDashboard } from "react-icons/md";
+import { FaMessage } from "react-icons/fa6";
+import { CgProfile } from "react-icons/cg";
 import { BiSolidCategory } from "react-icons/bi";
 import { BsFillPostcardFill } from "react-icons/bs";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { GrServices } from "react-icons/gr";
 import { UserRole } from "@prisma/client";
 
 interface SidebarProps {
@@ -27,25 +30,25 @@ const Sidebar = ({ name, image }: SidebarProps) => {
           id: 1,
           title: "Dashboard",
           path: "/admin",
-          icon: <MdDashboard size={30} />,
+          icon: <MdDashboard />,
+        },
+        {
+          id: 2,
+          title: "My Posts",
+          path: "/admin/posts",
+          icon: <BsFillPostcardFill />,
         },
         {
           id: 3,
-          title: "My Posts",
-          path: "/admin/posts",
-          icon: <BsFillPostcardFill size={30} />,
+          title: "Categories",
+          path: "/admin/categories",
+          icon: <BiSolidCategory />,
         },
         {
           id: 4,
-          title: "Categories",
-          path: "/admin/categories",
-          icon: <BiSolidCategory size={30} />,
-        },
-        {
-          id: 5,
           title: "Profile",
           path: `/admin/profile`,
-          icon: <MdOutlineSettings size={30} />,
+          icon: <CgProfile />,
         },
       ],
     },
@@ -113,6 +116,26 @@ const Sidebar = ({ name, image }: SidebarProps) => {
               >
                 <BsFillPostcardFill />
                 All Post
+              </Link>
+              <Link
+                href="/admin/leads"
+                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
+                  pathname === "/admin/leads" &&
+                  "text-[#17c1e8] font-semibold shadow-lg"
+                } `}
+              >
+                <FaMessage />
+                Leads
+              </Link>
+              <Link
+                href="/admin/services"
+                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
+                  pathname === "/admin/services" &&
+                  "text-[#17c1e8] font-semibold shadow-lg"
+                } `}
+              >
+                <GrServices />
+                Services
               </Link>
             </li>
           )}

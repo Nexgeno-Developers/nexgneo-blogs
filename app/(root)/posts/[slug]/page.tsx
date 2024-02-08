@@ -31,19 +31,12 @@ const SlugPage = async ({ params }: { params: { slug: string } }) => {
       include: {
         author: true,
         category: true,
-        postVisitor: true,
       },
     });
     return post;
   };
 
   const post = await fetchPostWithDelay();
-
-  const views = await db.postVisitor.findMany({
-    where: {
-      postId: post?.id,
-    },
-  });
 
   return (
     <>
@@ -57,7 +50,7 @@ const SlugPage = async ({ params }: { params: { slug: string } }) => {
         avatar={post?.author.image}
         author={post?.author.name}
         createdAt={post?.createdAt}
-        views={views}
+        views={post?.views}
       />
     </>
   );
