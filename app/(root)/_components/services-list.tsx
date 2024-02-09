@@ -45,8 +45,12 @@ export const ServicesList = ({ items }: PostsListProps) => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <div className="max-md:hidden">
+            <CarouselPrevious />
+          </div>
+          <div className="max-md:hidden">
+            <CarouselNext />
+          </div>
         </Carousel>
       </div>
     </>

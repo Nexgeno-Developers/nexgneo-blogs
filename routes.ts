@@ -3,14 +3,19 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes = ["/", "/posts", `/posts/:path*`];
+export const publicRoutes = [
+  "/",
+  "/posts",
+  `/posts/:path*`,
+  "/api/posts/:path*/views",
+];
 
 /**
  * An array of routes that are used for authentication
  * These routes will redirect logged in users to /settings
  * @type {string[]}
  */
-export const authRoutes = ["/login"];
+export const authRoutes = ["/auth/login", "/auth/reset", "/auth/new-password"];
 
 /**
  * The prefix for API authentication routes

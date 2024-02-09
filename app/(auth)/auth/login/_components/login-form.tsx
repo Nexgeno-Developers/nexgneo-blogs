@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { LoginSchema } from "@/schemas";
 import { login } from "@/actions/login";
 import { startTransition } from "react";
+import Link from "next/link";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -98,22 +99,32 @@ const LoginForm = () => {
                         {...field}
                       />
                     </FormControl>
+                    <Button
+                      size="sm"
+                      variant="link"
+                      asChild
+                      className="px-0 font-normal"
+                    >
+                      <Link href="/auth/reset">Forgot password?</Link>
+                    </Button>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <div className="mt-7 text-end">
-                <Button type="submit" disabled={!isValid || isSubmitting}>
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Please wait
-                    </>
-                  ) : (
-                    <>Submit</>
-                  )}
-                </Button>
-              </div>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={!isValid || isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please wait
+                  </>
+                ) : (
+                  <>Submit</>
+                )}
+              </Button>
             </form>
           </Form>
         </div>

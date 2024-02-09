@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { GrServices } from "react-icons/gr";
 import { UserRole } from "@prisma/client";
+import { UserButton } from "./user-button";
 
 interface SidebarProps {
   name?: string | null;
@@ -44,12 +45,6 @@ const Sidebar = ({ name, image }: SidebarProps) => {
           path: "/admin/categories",
           icon: <BiSolidCategory />,
         },
-        {
-          id: 4,
-          title: "Profile",
-          path: `/admin/profile`,
-          icon: <CgProfile />,
-        },
       ],
     },
   ];
@@ -57,21 +52,16 @@ const Sidebar = ({ name, image }: SidebarProps) => {
   return (
     <>
       <div className="sticky top-10">
-        <div className="flex items-center gap-5 mb-5">
-          <div className="relative h-14 w-14">
-            <Image
-              className="rounded-full object-cover"
-              src={image || "/noavatar.png"}
-              alt="profile"
-              fill={true}
-              key={"item._id"}
-            />
-          </div>
+        <Link href="/">
+          <Image
+            width={200}
+            height={60}
+            alt="logo"
+            src="/logo.webp"
+            className="mb-3"
+          />
+        </Link>
 
-          <div className="flex flex-col">
-            <span className="font-medium">{name}</span>
-          </div>
-        </div>
         <ul className="list-none">
           {menuItems.map((cat) => (
             <li key={cat.id}>

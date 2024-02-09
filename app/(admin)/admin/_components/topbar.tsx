@@ -2,6 +2,7 @@
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { MdLogout, MdPublic, MdSearch } from "react-icons/md";
+import { UserButton } from "./user-button";
 
 const TopBar = () => {
   const router = useRouter();
@@ -19,15 +20,7 @@ const TopBar = () => {
         </div>
         <div className="flex items-center gap-5">
           <div className="flex gap-5 items-center">
-            <MdPublic
-              onClick={() => router.push("/")}
-              className="cursor-pointer"
-              size={20}
-            />
-
-            <button onClick={() => signOut({ callbackUrl: "/" })}>
-              <MdLogout size={20} />
-            </button>
+            <UserButton />
           </div>
         </div>
       </div>
