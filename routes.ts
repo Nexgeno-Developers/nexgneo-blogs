@@ -8,6 +8,7 @@ export const publicRoutes = [
   "/posts",
   `/posts/:path*`,
   "/api/posts/:path*/views",
+  "/api/leads",
 ];
 
 /**

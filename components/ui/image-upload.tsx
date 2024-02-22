@@ -56,7 +56,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             </div>
           ))}
         </div>
-        <CldUploadWidget onUpload={onUpload} uploadPreset="nexgenowebsite">
+        <CldUploadWidget onUpload={onUpload} uploadPreset="nexgeno">
           {({ open }) => {
             const onClick = () => {
               open();

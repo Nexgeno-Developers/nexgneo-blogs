@@ -8,13 +8,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Trash } from "lucide-react";
+import { Eye, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Leads } from "@prisma/client";
 import { AlertModal } from "@/components/modal/alert-modal";
+import { LeadModal } from "@/components/modal/lead-modal";
 
 interface CellActionsProps {
   data: Leads;
@@ -24,6 +25,7 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [leadOpen, setLeadOpen] = useState(false);
 
   const onConfirm = async () => {
     try {
@@ -47,6 +49,15 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         onConfirm={onConfirm}
         loading={loading}
       />
+      <LeadModal
+        isOpen={leadOpen}
+        onClose={() => setLeadOpen(false)}
+        name={data.name}
+        email={data.email}
+        country={data.country}
+        mobile={data.mobile}
+        message={data.message}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -56,7 +67,9 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
+          <DropdownMenuItem onClick={() => setLeadOpen(true)}>
+            <Eye className="mr-2 h-4 w-4" /> View
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>

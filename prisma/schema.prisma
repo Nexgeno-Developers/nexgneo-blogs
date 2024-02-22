@@ -90,8 +90,11 @@ model Post {
 model Leads {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   name     String
+  last     String?
   email    String
   country  String
+  mobile   String
+  subject  String
   message  String
 
   createdAt DateTime  @default(now())

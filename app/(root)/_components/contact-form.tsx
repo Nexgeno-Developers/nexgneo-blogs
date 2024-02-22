@@ -29,8 +29,14 @@ const formSchema = z.object({
   country: z.string().min(3, {
     message: "country is required",
   }),
+  mobile: z.string().min(3, {
+    message: "Mobile No is required",
+  }),
   message: z.string().min(3, {
     message: "Message is required",
+  }),
+  subject: z.string().min(3, {
+    message: "Subject is required",
   }),
 });
 
@@ -43,7 +49,9 @@ export const ContactForm = () => {
       name: "",
       email: "",
       country: "",
+      mobile: "",
       message: "",
+      subject: "This lead from Blog Home page",
     },
   });
 
@@ -112,6 +120,24 @@ export const ContactForm = () => {
                   <Input
                     disabled={isSubmitting}
                     placeholder="Country"
+                    type="text"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="mobile"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mobile</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isSubmitting}
+                    placeholder="Mobile No"
                     type="text"
                     {...field}
                   />

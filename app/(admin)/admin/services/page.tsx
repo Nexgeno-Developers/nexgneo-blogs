@@ -17,8 +17,8 @@ const Services = async () => {
     <>
       <div className="flex items-center justify-between pb-4">
         <Heading
-          title={`My Post (11)`}
-          description="Manage all post of your employ and your post here"
+          title={`Nexgeno Services (${services.length})`}
+          description="Manage all Services of your Nexgeno Website"
         />
         <Link href="/admin/services/new">
           <Button>

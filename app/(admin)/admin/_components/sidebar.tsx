@@ -117,6 +117,7 @@ const Sidebar = ({ name, image }: SidebarProps) => {
                 <FaMessage />
                 Leads
               </Link>
+
               <Link
                 href="/admin/services"
                 className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
