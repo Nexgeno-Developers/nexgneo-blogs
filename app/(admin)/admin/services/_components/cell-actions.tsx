@@ -62,18 +62,6 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => onCopy(`${data.url}`)}>
-            <Copy className="mr-2 h-4 w-4" /> Copy URL
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link
-              className="flex items-center"
-              href={`${data.url}`}
-              target="_blank"
-            >
-              <Eye className="mr-2 h-4 w-4" /> View
-            </Link>
-          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => router.push(`/admin/services/${data.id}`)}
           >
