@@ -115,7 +115,7 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
         </div>
       </section>
 
-      <section className="py-10">
+      {/* <section className="py-10">
         <div className="container">
           <div className="">
             <span className="border-b-[2px] pb-1 border-black font-semibold text-xl">
@@ -124,7 +124,7 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
           </div>
           <ServicesList items={services} />
         </div>
-      </section>
+      </section> */}
 
       {/* <section>
         <div className="container">

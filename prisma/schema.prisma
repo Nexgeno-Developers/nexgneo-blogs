@@ -105,9 +105,16 @@ model Leads {
 
 model Services {
   id         String @id @default(auto()) @map("_id")  @db.ObjectId
-  title      String
   image      String
-  url        String
+  title      String
+  desc       String
+  slug       String
+  metaTitle  String
+  metaDesc   String
+  h1Title    String
+  h1Desc     String
+  h2Title    String
+  h2Desc     String
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

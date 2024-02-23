@@ -27,7 +27,7 @@ export const ServicesList = ({ items }: PostsListProps) => {
           <CarouselContent>
             {items.map((item) => (
               <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
-                <Link href={item.url} target="_blank">
+                <Link href={item.slug} target="_blank">
                   <div className="relative aspect-video">
                     <Image
                       alt="services img"

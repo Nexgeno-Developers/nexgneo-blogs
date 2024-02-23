@@ -10,13 +10,31 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { title, image, url } = await req.json();
+    const {
+      title,
+      image,
+      desc,
+      slug,
+      metaTitle,
+      metaDesc,
+      h1Title,
+      h1Desc,
+      h2Title,
+      h2Desc,
+    } = await req.json();
 
     const service = await db.services.create({
       data: {
         title,
         image,
-        url,
+        desc,
+        slug,
+        metaTitle,
+        metaDesc,
+        h1Title,
+        h1Desc,
+        h2Title,
+        h2Desc,
       },
     });
 

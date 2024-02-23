@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form";
 import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
@@ -20,14 +21,41 @@ import toast from "react-hot-toast";
 import * as z from "zod";
 
 const formSchema = z.object({
-  title: z.string().min(3, {
-    message: "Title is Required minimum 3 char",
-  }),
   image: z.string().min(1, {
     message: "Image is required",
   }),
-  url: z.string().min(3, {
-    message: "URL is required",
+  title: z.string().min(3, {
+    message: "Title is Required minimum 3 char",
+  }),
+  desc: z.string().min(3, {
+    message: "Desc is Required minimum 3 char",
+  }),
+  slug: z
+    .string()
+    .min(3, {
+      message: "Slug is required",
+    })
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+      message:
+        "Invalid slug format. Slugs can only contain lowercase letters, numbers, and hyphens.",
+    }),
+  metaTitle: z.string().min(3, {
+    message: "metaTitle is required",
+  }),
+  metaDesc: z.string().min(3, {
+    message: "metaTitle is required",
+  }),
+  h1Title: z.string().min(3, {
+    message: "h1Title is required",
+  }),
+  h1Desc: z.string().min(3, {
+    message: "h1Desc is required",
+  }),
+  h2Title: z.string().min(3, {
+    message: "h2Title is required",
+  }),
+  h2Desc: z.string().min(3, {
+    message: "h2Desc is required",
   }),
 });
 
@@ -37,9 +65,16 @@ export const AddServicesForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
       image: "",
-      url: "",
+      title: "",
+      desc: "",
+      slug: "",
+      metaTitle: "",
+      metaDesc: "",
+      h1Title: "",
+      h1Desc: "",
+      h2Title: "",
+      h2Desc: "",
     },
   });
 
@@ -59,7 +94,7 @@ export const AddServicesForm = () => {
   return (
     <>
       <div className="max-w-3xl mx-auto mt-10">
-        <h1 className="text-2xl">Update Profile</h1>
+        <h1 className="text-2xl">Add New Service</h1>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -88,11 +123,11 @@ export const AddServicesForm = () => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Services Title</FormLabel>
+                  <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="Name"
+                      placeholder="Title"
                       {...field}
                     />
                   </FormControl>
@@ -102,14 +137,133 @@ export const AddServicesForm = () => {
             />
             <FormField
               control={form.control}
-              name="url"
+              name="desc"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Services URL</FormLabel>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      disabled={isSubmitting}
+                      placeholder="Description"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Slug</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
                       placeholder="e.g. 'https://nexgneo.in/web-application'"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="metaTitle"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Meta Title</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="Meta Title"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="metaDesc"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Meta Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      disabled={isSubmitting}
+                      placeholder="Meta Description"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="h1Title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>H1 Title</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="H1 Title"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="h1Desc"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>H1 Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      disabled={isSubmitting}
+                      placeholder="H1 Description"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="h2Title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>H2 Title</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="H2 Title"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="h2Desc"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>H2 Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      disabled={isSubmitting}
+                      placeholder="H2 Description"
                       {...field}
                     />
                   </FormControl>
