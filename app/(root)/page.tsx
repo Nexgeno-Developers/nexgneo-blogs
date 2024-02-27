@@ -39,7 +39,7 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
       <section className="py-10">
         <div className="pb-20">
           <h1 className="text-center text-4xl font-semibold mb-3">
-            Nexgeno Blog test
+            Nexgeno Blog
           </h1>
           <p className="text-center">
             Latest news, insights, and trends in the world of technology. Our
