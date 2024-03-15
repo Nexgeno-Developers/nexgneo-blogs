@@ -1,5 +1,6 @@
 "use client";
 
+import { Editor } from "@/components/editor";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -232,11 +233,7 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
                 <FormItem>
                   <FormLabel>H1 Description</FormLabel>
                   <FormControl>
-                    <Textarea
-                      disabled={isSubmitting}
-                      placeholder="H1 Description"
-                      {...field}
-                    />
+                    <Editor {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -266,11 +263,7 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
                 <FormItem>
                   <FormLabel>H2 Description</FormLabel>
                   <FormControl>
-                    <Textarea
-                      disabled={isSubmitting}
-                      placeholder="H2 Description"
-                      {...field}
-                    />
+                    <Editor {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
