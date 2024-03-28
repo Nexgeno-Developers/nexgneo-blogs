@@ -1,0 +1,139 @@
+"use client";
+import Image from "next/image";
+import { MdDashboard } from "react-icons/md";
+import { FaMessage } from "react-icons/fa6";
+import { CgProfile } from "react-icons/cg";
+import { BiSolidCategory } from "react-icons/bi";
+import { BsFillPostcardFill } from "react-icons/bs";
+import Link from "next/link";
+import { FaUser } from "react-icons/fa";
+import { usePathname } from "next/navigation";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { GrServices } from "react-icons/gr";
+import { UserRole } from "@prisma/client";
+import { UserButton } from "./user-button";
+
+interface SidebarProps {
+  name?: string | null;
+  image?: string | null;
+}
+
+const Sidebar = ({ name, image }: SidebarProps) => {
+  const pathname = usePathname();
+  const user = useCurrentUser();
+
+  const menuItems = [
+    {
+      id: 1,
+      title: "Pages",
+      list: [
+        {
+          id: 1,
+          title: "Dashboard",
+          path: "/admin",
+          icon: <MdDashboard />,
+        },
+        {
+          id: 2,
+          title: "My Posts",
+          path: "/admin/posts",
+          icon: <BsFillPostcardFill />,
+        },
+        {
+          id: 3,
+          title: "Categories",
+          path: "/admin/categories",
+          icon: <BiSolidCategory />,
+        },
+      ],
+    },
+  ];
+
+  return (
+    <>
+      <div className="sticky top-10">
+        <Link href="/">
+          <Image
+            width={200}
+            height={60}
+            alt="logo"
+            src="/logo.webp"
+            className="mb-3"
+          />
+        </Link>
+
+        <ul className="list-none">
+          {menuItems.map((cat) => (
+            <li key={cat.id}>
+              <span className="font-bold text-xs my-2">{cat.title}</span>
+              {cat.list.map((item) => (
+                <>
+                  <Link
+                    href={item.path}
+                    key={item.id}
+                    className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
+                      pathname === item.path &&
+                      " text-[#17c1e8] font-semibold shadow-lg"
+                    } `}
+                  >
+                    {item.icon}
+                    {item.title}
+                  </Link>
+                </>
+              ))}
+            </li>
+          ))}
+
+          {user?.role === UserRole.ADMIN && (
+            <li>
+              <span className="font-bold text-xs my-2">Admin</span>
+              <Link
+                href="/admin/user-management"
+                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
+                  pathname === "/admin/user-management" &&
+                  " text-[#17c1e8] font-semibold shadow-lg"
+                } `}
+              >
+                <FaUser />
+                User Management
+              </Link>
+              <Link
+                href="/admin/all-post"
+                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
+                  pathname === "/admin/all-post" &&
+                  "text-[#17c1e8] font-semibold shadow-lg"
+                } `}
+              >
+                <BsFillPostcardFill />
+                All Post
+              </Link>
+              <Link
+                href="/admin/leads"
+                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
+                  pathname === "/admin/leads" &&
+                  "text-[#17c1e8] font-semibold shadow-lg"
+                } `}
+              >
+                <FaMessage />
+                Leads
+              </Link>
+
+              <Link
+                href="/admin/services"
+                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
+                  pathname === "/admin/services" &&
+                  "text-[#17c1e8] font-semibold shadow-lg"
+                } `}
+              >
+                <GrServices />
+                Services
+              </Link>
+            </li>
+          )}
+        </ul>
+      </div>
+    </>
+  );
+};
+
+export default Sidebar;
