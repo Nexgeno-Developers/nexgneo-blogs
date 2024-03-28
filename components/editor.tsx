@@ -16,6 +16,7 @@ export const Editor = ({ onChange, value }: EditorProps) => {
     []
   );
 
+<<<<<<< HEAD
   const modules = useMemo(
     () => ({
       toolbar: {
@@ -63,6 +64,11 @@ export const Editor = ({ onChange, value }: EditorProps) => {
         modules={modules}
         formats={formats}
       />
+=======
+  return (
+    <div className="bg-white">
+      <ReactQuill theme="snow" value={value} onChange={onChange} />
+>>>>>>> 3dc6dfed4b04963d3da9876e36a12ce8a612c263
     </div>
   );
 };
