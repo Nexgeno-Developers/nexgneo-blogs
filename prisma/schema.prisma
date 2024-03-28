@@ -111,15 +111,8 @@ model Services {
   slug       String
   metaTitle  String
   metaDesc   String
-<<<<<<< HEAD
   content    String
 
-=======
-  h1Title    String
-  h1Desc     String
-  h2Title    String
-  h2Desc     String
->>>>>>> 3dc6dfed4b04963d3da9876e36a12ce8a612c263
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
