@@ -51,24 +51,9 @@ const formSchema = z.object({
   metaDesc: z.string().min(3, {
     message: "metaTitle is required",
   }),
-<<<<<<< HEAD
   content: z.string().min(3, {
     message: "h1Title is required",
   }),
-=======
-  h1Title: z.string().min(3, {
-    message: "h1Title is required",
-  }),
-  h1Desc: z.string().min(3, {
-    message: "h1Desc is required",
-  }),
-  h2Title: z.string().min(3, {
-    message: "h2Title is required",
-  }),
-  h2Desc: z.string().min(3, {
-    message: "h2Desc is required",
-  }),
->>>>>>> 3dc6dfed4b04963d3da9876e36a12ce8a612c263
 });
 
 export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
@@ -83,14 +68,7 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
       slug: data?.slug || "",
       metaTitle: data?.metaTitle || "",
       metaDesc: data?.metaDesc || "",
-<<<<<<< HEAD
       content: data?.content || "",
-=======
-      h1Title: data?.h1Title || "",
-      h1Desc: data?.h1Desc || "",
-      h2Title: data?.h2Title || "",
-      h2Desc: data?.h2Desc || "",
->>>>>>> 3dc6dfed4b04963d3da9876e36a12ce8a612c263
     },
   });
 
@@ -219,7 +197,6 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
                 </FormItem>
               )}
             />
-<<<<<<< HEAD
 
             <FormField
               control={form.control}
@@ -227,61 +204,6 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Content</FormLabel>
-=======
-            <FormField
-              control={form.control}
-              name="h1Title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>H1 Title</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="H1 Title"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="h1Desc"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>H1 Description</FormLabel>
-                  <FormControl>
-                    <Editor {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="h2Title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>H2 Title</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="H2 Title"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="h2Desc"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>H2 Description</FormLabel>
->>>>>>> 3dc6dfed4b04963d3da9876e36a12ce8a612c263
                   <FormControl>
                     <Editor {...field} />
                   </FormControl>
