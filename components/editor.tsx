@@ -20,7 +20,7 @@ export const Editor = ({ onChange, value }: EditorProps) => {
     () => ({
       toolbar: {
         container: [
-          [{ header: [1, 2, false] }],
+          [{ header: [1, 2, 3, 4, 5, 6] }],
           ["bold", "italic", "underline", "strike", "blockquote"],
           [
             { list: "ordered" },
