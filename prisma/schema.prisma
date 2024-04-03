@@ -108,7 +108,7 @@ model Services {
   image      String
   title      String
   desc       String
-  slug       String
+  slug       String @unique
   metaTitle  String
   metaDesc   String
   content    String

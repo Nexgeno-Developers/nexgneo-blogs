@@ -30,6 +30,7 @@ export const Editor = ({ onChange, value }: EditorProps) => {
           ],
           ["link", "image", "video"],
           ["clean"],
+          ["normal-text"], // Add 'normal-text' tool
         ],
       },
     }),
