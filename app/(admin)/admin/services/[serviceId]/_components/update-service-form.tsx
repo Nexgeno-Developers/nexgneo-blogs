@@ -30,6 +30,9 @@ const formSchema = z.object({
   image: z.string().min(1, {
     message: "Image is required",
   }),
+  altTag: z.string().min(1, {
+    message: "AltTag is required",
+  }),
   title: z.string().min(3, {
     message: "Title is Required minimum 3 char",
   }),
@@ -63,6 +66,7 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       image: data?.image || "",
+      altTag: data?.altTag || "",
       title: data?.title || "",
       desc: data?.desc || "",
       slug: data?.slug || "",
@@ -106,6 +110,23 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
                       disabled={isSubmitting}
                       onChange={(url) => field.onChange(url)}
                       onRemove={() => field.onChange("")}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="altTag"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="Alt Tag"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />

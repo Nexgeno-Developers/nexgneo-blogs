@@ -106,6 +106,7 @@ model Leads {
 model Services {
   id         String @id @default(auto()) @map("_id")  @db.ObjectId
   image      String
+  altTag     String?
   title      String
   desc       String
   slug       String @unique
