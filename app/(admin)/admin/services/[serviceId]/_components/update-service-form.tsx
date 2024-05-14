@@ -121,7 +121,7 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
               name="altTag"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>Alt Tag</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
