@@ -34,7 +34,7 @@ const AdminClient = async () => {
       <Separator />
       <div className="mt-5">
         <DataTable
-          searchKey="title"
+          searchKey="name"
           placeholder="Search a Employ..."
           columns={columns}
           data={users}

@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     const { name, last, email, country, mobile, subject, message } =
       await req.json();
 
-    const leads = await db.leads.create({
+    const lead = await db.leads.create({
       data: {
         name,
         last,
@@ -18,9 +18,9 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json(leads);
+    return NextResponse.json(lead);
   } catch (error) {
-    console.log("[LEADS_POST]", error);
+    console.log("[LEAD_POST]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

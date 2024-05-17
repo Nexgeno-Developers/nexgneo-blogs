@@ -7,8 +7,8 @@ import Link from "next/link";
 import { columns } from "./_components/columns";
 import { db } from "@/lib/db";
 
-const Services = async () => {
-  const services = await db.services.findMany({
+const HireDeveloperPage = async () => {
+  const hireDeveloper = await db.hireDeveloper.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -17,10 +17,10 @@ const Services = async () => {
     <>
       <div className="flex items-center justify-between pb-4">
         <Heading
-          title={`Services Pages (${services.length})`}
-          description="Manage all Services pages of your Nexgeno Website"
+          title={`Hire Developer Page (${hireDeveloper.length})`}
+          description="Manage all hire developer pages of your Nexgeno Website"
         />
-        <Link href="/admin/services/new">
+        <Link href="/admin/hire-developer/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
             Add New
@@ -31,13 +31,13 @@ const Services = async () => {
       <div className="mt-5">
         <DataTable
           searchKey="title"
-          placeholder="Search a service page by title..."
+          placeholder="Search a hire hire developer page by title..."
           columns={columns}
-          data={services}
+          data={hireDeveloper}
         />
       </div>
     </>
   );
 };
 
-export default Services;
+export default HireDeveloperPage;

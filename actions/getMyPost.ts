@@ -1,6 +1,7 @@
+import { Post } from "@prisma/client";
+
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { Post } from "@prisma/client";
 
 export const getMyPosts = async (): Promise<Post[]> => {
   const user = await currentUser();

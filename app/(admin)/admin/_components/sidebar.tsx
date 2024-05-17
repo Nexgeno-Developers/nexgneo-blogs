@@ -8,6 +8,7 @@ import { BsFillPostcardFill } from "react-icons/bs";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { usePathname } from "next/navigation";
+import { Building2, Code, Lightbulb, Ratio } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { GrServices } from "react-icons/gr";
 import { UserRole } from "@prisma/client";
@@ -48,6 +49,56 @@ const Sidebar = ({ name, image }: SidebarProps) => {
       ],
     },
   ];
+  const adminRoutes = [
+    {
+      id: 1,
+      title: "Admin",
+      list: [
+        {
+          id: 1,
+          title: "User Management",
+          path: "/admin/user-management",
+          icon: <FaUser />,
+        },
+        {
+          id: 2,
+          title: "All Post",
+          path: "/admin/all-post",
+          icon: <BsFillPostcardFill />,
+        },
+        {
+          id: 3,
+          title: "Leads",
+          path: "/admin/leads",
+          icon: <FaMessage />,
+        },
+        {
+          id: 4,
+          title: "Services",
+          path: "/admin/services",
+          icon: <GrServices />,
+        },
+        {
+          id: 5,
+          title: "Hire Developer",
+          path: "/admin/hire-developer",
+          icon: <Code />,
+        },
+        {
+          id: 6,
+          title: "Industries",
+          path: "/admin/industries",
+          icon: <Building2 />,
+        },
+        {
+          id: 7,
+          title: "Solutions",
+          path: "/admin/solutions",
+          icon: <Lightbulb />,
+        },
+      ],
+    },
+  ];
 
   return (
     <>
@@ -84,52 +135,27 @@ const Sidebar = ({ name, image }: SidebarProps) => {
             </li>
           ))}
 
-          {user?.role === UserRole.ADMIN && (
-            <li>
-              <span className="font-bold text-xs my-2">Admin</span>
-              <Link
-                href="/admin/user-management"
-                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
-                  pathname === "/admin/user-management" &&
-                  " text-[#17c1e8] font-semibold shadow-lg"
-                } `}
-              >
-                <FaUser />
-                User Management
-              </Link>
-              <Link
-                href="/admin/all-post"
-                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
-                  pathname === "/admin/all-post" &&
-                  "text-[#17c1e8] font-semibold shadow-lg"
-                } `}
-              >
-                <BsFillPostcardFill />
-                All Post
-              </Link>
-              <Link
-                href="/admin/leads"
-                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
-                  pathname === "/admin/leads" &&
-                  "text-[#17c1e8] font-semibold shadow-lg"
-                } `}
-              >
-                <FaMessage />
-                Leads
-              </Link>
-
-              <Link
-                href="/admin/services"
-                className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
-                  pathname === "/admin/services" &&
-                  "text-[#17c1e8] font-semibold shadow-lg"
-                } `}
-              >
-                <GrServices />
-                Services
-              </Link>
-            </li>
-          )}
+          {user?.role === UserRole.ADMIN &&
+            adminRoutes.map((item) => (
+              <li key={item.id}>
+                <span className="font-bold text-xs my-2">{item.title}</span>
+                {item.list.map((item) => (
+                  <>
+                    <Link
+                      href={item.path}
+                      key={item.id}
+                      className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
+                        pathname === item.path &&
+                        " text-[#17c1e8] font-semibold shadow-lg"
+                      } `}
+                    >
+                      {item.icon}
+                      {item.title}
+                    </Link>
+                  </>
+                ))}
+              </li>
+            ))}
         </ul>
       </div>
     </>

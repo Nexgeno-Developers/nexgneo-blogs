@@ -1,7 +1,5 @@
-
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -15,8 +13,6 @@ enum UserRole {
   USER
 }
 
-
-
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
@@ -24,24 +20,24 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?
-  role          UserRole @default(USER)
+  role          UserRole  @default(USER)
   accounts      Account[]
   posts         Post[]
 }
 
 model Account {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId             String  @db.ObjectId
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  
-  access_token       String?  
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  
-  session_state      String?
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -49,81 +45,118 @@ model Account {
 }
 
 model Category {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String   @unique
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
 
-  posts       Post[]
+  posts Post[]
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-
 model Post {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
   title       String
-  slug        String    @unique
+  slug        String  @unique
   description String
   textEditor  String
   image       String
   metaTitle   String
   metaDesc    String
-  views       Int       @default(0)
-  isPublished Boolean   @default(false)
+  views       Int     @default(0)
+  isPublished Boolean @default(false)
 
-  categoryId  String    @db.ObjectId
-  category    Category  @relation(fields: [categoryId], references: [id])
-  
-  authorId    String    @db.ObjectId
-  author      User      @relation(fields: [authorId], references: [id])
+  categoryId String   @db.ObjectId
+  category   Category @relation(fields: [categoryId], references: [id])
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  authorId String @db.ObjectId
+  author   User   @relation(fields: [authorId], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@fulltext([title])
 }
 
-
-
-
 model Leads {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  last     String?
-  email    String
-  country  String
-  mobile   String
-  subject  String
-  message  String
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  last    String?
+  email   String
+  country String
+  mobile  String
+  subject String
+  message String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-
-
 model Services {
-  id         String @id @default(auto()) @map("_id")  @db.ObjectId
-  image      String
-  altTag     String?
-  title      String
-  desc       String
-  slug       String @unique
-  metaTitle  String
-  metaDesc   String
-  content    String
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  image     String
+  altTag    String?
+  title     String
+  desc      String
+  slug      String  @unique
+  metaTitle String
+  metaDesc  String
+  content   String
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model HireDeveloper {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  image     String
+  altTag    String?
+  title     String
+  desc      String
+  slug      String  @unique
+  metaTitle String
+  metaDesc  String
+  content   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Industries {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  image     String
+  altTag    String?
+  title     String
+  desc      String
+  slug      String  @unique
+  metaTitle String
+  metaDesc  String
+  content   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Solutions {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  image     String
+  altTag    String?
+  title     String
+  desc      String
+  slug      String  @unique
+  metaTitle String
+  metaDesc  String
+  content   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model PasswordResetToken {
-  id         String @id @default(auto()) @map("_id")  @db.ObjectId
-  email      String
-  token      String @unique
-  expires    DateTime
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
+  expires DateTime
 
   @@unique([email, token])
 }

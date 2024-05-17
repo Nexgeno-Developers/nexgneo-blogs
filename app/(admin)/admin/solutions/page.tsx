@@ -7,8 +7,8 @@ import Link from "next/link";
 import { columns } from "./_components/columns";
 import { db } from "@/lib/db";
 
-const Services = async () => {
-  const services = await db.services.findMany({
+const SolutionsPage = async () => {
+  const solutions = await db.solutions.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -17,10 +17,10 @@ const Services = async () => {
     <>
       <div className="flex items-center justify-between pb-4">
         <Heading
-          title={`Services Pages (${services.length})`}
-          description="Manage all Services pages of your Nexgeno Website"
+          title={`Solutions pages (${solutions.length})`}
+          description="Manage all solutions pages of your Nexgeno Website"
         />
-        <Link href="/admin/services/new">
+        <Link href="/admin/solutions/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
             Add New
@@ -31,13 +31,13 @@ const Services = async () => {
       <div className="mt-5">
         <DataTable
           searchKey="title"
-          placeholder="Search a service page by title..."
+          placeholder="Search a solutions page by title..."
           columns={columns}
-          data={services}
+          data={solutions}
         />
       </div>
     </>
   );
 };
 
-export default Services;
+export default SolutionsPage;

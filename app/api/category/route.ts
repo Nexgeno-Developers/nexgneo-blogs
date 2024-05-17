@@ -1,6 +1,7 @@
-import { currentUser } from "@/lib/auth";
-import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
+
+import { db } from "@/lib/db";
+import { currentUser } from "@/lib/auth";
 
 export async function POST(req: Request) {
   const user = await currentUser();

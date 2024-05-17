@@ -1,5 +1,6 @@
-import { db } from "@/lib/db";
 import { Post } from "@prisma/client";
+
+import { db } from "@/lib/db";
 
 type getPosts = {
   title?: string;

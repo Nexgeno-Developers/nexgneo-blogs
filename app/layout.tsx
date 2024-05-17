@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
 import { Toaster } from "react-hot-toast";
+import { SessionProvider } from "next-auth/react";
+
+import "./globals.css";
+
+import { auth } from "@/auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
