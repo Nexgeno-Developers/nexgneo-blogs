@@ -44,9 +44,9 @@ const formSchema = z.object({
     .min(3, {
       message: "Slug is required",
     })
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+    .regex(/^[a-z0-9]+(?:[-.][a-z0-9]+)*$/, {
       message:
-        "Invalid slug format. Slugs can only contain lowercase letters, numbers, and hyphens.",
+        "Invalid slug format. Slugs can only contain lowercase letters, numbers, hyphens, and periods.",
     }),
   metaTitle: z.string().min(3, {
     message: "metaTitle is required",
