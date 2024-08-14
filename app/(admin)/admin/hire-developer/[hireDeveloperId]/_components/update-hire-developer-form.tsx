@@ -57,6 +57,9 @@ const formSchema = z.object({
   content: z.string().min(3, {
     message: "h1Title is required",
   }),
+  whyChoose: z.string().min(3, {
+    message: "whyChoose is required",
+  }),
 });
 
 export const UpdateHireDeveloperForm = ({
@@ -75,6 +78,7 @@ export const UpdateHireDeveloperForm = ({
       metaTitle: data?.metaTitle || "",
       metaDesc: data?.metaDesc || "",
       content: data?.content || "",
+      whyChoose: data?.whyChoose || "",
     },
   });
 
@@ -227,6 +231,19 @@ export const UpdateHireDeveloperForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Content</FormLabel>
+                  <FormControl>
+                    <Editor {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="whyChoose"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Why Choose Content</FormLabel>
                   <FormControl>
                     <Editor {...field} />
                   </FormControl>

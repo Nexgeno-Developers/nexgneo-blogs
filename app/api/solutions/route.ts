@@ -10,8 +10,17 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { title, altTag, image, desc, slug, metaTitle, metaDesc, content } =
-      await req.json();
+    const {
+      title,
+      altTag,
+      image,
+      desc,
+      slug,
+      metaTitle,
+      metaDesc,
+      content,
+      whyChoose,
+    } = await req.json();
 
     const solution = await db.solutions.create({
       data: {
@@ -23,6 +32,7 @@ export async function POST(req: Request) {
         metaTitle,
         metaDesc,
         content,
+        whyChoose,
       },
     });
 

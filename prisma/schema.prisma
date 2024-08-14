@@ -104,6 +104,7 @@ model Services {
   metaTitle String
   metaDesc  String
   content   String
+  whyChoose String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -119,6 +120,7 @@ model HireDeveloper {
   metaTitle String
   metaDesc  String
   content   String
+  whyChoose String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -134,6 +136,8 @@ model Industries {
   metaTitle String
   metaDesc  String
   content   String
+  whyChoose String?
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -149,6 +153,7 @@ model Solutions {
   metaTitle String
   metaDesc  String
   content   String
+  whyChoose String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
