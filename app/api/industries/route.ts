@@ -11,29 +11,11 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const {
-      title,
-      altTag,
-      image,
-      desc,
-      slug,
-      metaTitle,
-      metaDesc,
-      content,
-      whyChoose,
-    } = await req.json();
+    const values = await req.json();
 
     const industry = await db.industries.create({
       data: {
-        title,
-        altTag,
-        image,
-        desc,
-        slug,
-        metaTitle,
-        metaDesc,
-        content,
-        whyChoose,
+        ...values,
       },
     });
 

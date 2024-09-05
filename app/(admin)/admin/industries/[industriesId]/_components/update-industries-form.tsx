@@ -36,6 +36,9 @@ const formSchema = z.object({
   title: z.string().min(3, {
     message: "Title is Required minimum 3 char",
   }),
+  menuTitle: z.string().min(3, {
+    message: "Menu Title is Required minimum 3 char",
+  }),
   desc: z.string().min(3, {
     message: "Desc is Required minimum 3 char",
   }),
@@ -71,6 +74,7 @@ export const UpdateIndustriesForm = ({ data }: UpdateIndustriesFormProps) => {
       image: data?.image || "",
       altTag: data?.altTag || "",
       title: data?.title || "",
+      menuTitle: data?.menuTitle || "",
       desc: data?.desc || "",
       slug: data?.slug || "",
       metaTitle: data?.metaTitle || "",
@@ -147,6 +151,23 @@ export const UpdateIndustriesForm = ({ data }: UpdateIndustriesFormProps) => {
                     <Input
                       disabled={isSubmitting}
                       placeholder="Title"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="menuTitle"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Menu Title</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="Menu Title"
                       {...field}
                     />
                   </FormControl>
