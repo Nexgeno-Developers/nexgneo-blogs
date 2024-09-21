@@ -1,5 +1,14 @@
 "use client";
 
+import axios from "axios";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { Eye, MoreHorizontal, Trash } from "lucide-react";
+
+import { Leads } from "@prisma/client";
+
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,15 +16,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Eye, MoreHorizontal, Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import axios from "axios";
-import { Leads } from "@prisma/client";
-import { AlertModal } from "@/components/modal/alert-modal";
+
 import { LeadModal } from "@/components/modal/lead-modal";
+import { AlertModal } from "@/components/modal/alert-modal";
 
 interface CellActionsProps {
   data: Leads;
@@ -54,7 +57,6 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         onClose={() => setLeadOpen(false)}
         name={data.name}
         email={data.email}
-        country={data.country}
         mobile={data.mobile}
         message={data.message}
       />

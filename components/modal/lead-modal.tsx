@@ -1,18 +1,17 @@
 "use client";
 
+import { RxAvatar } from "react-icons/rx";
+import { BiMobile } from "react-icons/bi";
 import { useEffect, useState } from "react";
+import { Locate, Mail, MailOpen } from "lucide-react";
 
 import { Modal } from "@/components/ui/modal";
-import { RxAvatar } from "react-icons/rx";
-import { Locate, Mail, MailOpen } from "lucide-react";
-import { BiMobile } from "react-icons/bi";
 
 interface LeadModalProps {
   isOpen: boolean;
   onClose: () => void;
   name: string;
   email: string;
-  country: string;
   mobile: string;
   message: string;
 }
@@ -22,7 +21,6 @@ export const LeadModal: React.FC<LeadModalProps> = ({
   onClose,
   name,
   email,
-  country,
   mobile,
   message,
 }) => {
@@ -51,10 +49,6 @@ export const LeadModal: React.FC<LeadModalProps> = ({
         <div className="flex items-center gap-2">
           <Mail />
           <span>{email}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Locate />
-          <span>{country}</span>
         </div>
         <div className="flex items-center gap-2">
           <BiMobile className="h-6 w-6" />

@@ -83,9 +83,6 @@ model Leads {
   name    String
   last    String?
   email   String
-  city    String
-  region  String
-  country String
   mobile  String
   subject String
   message String
