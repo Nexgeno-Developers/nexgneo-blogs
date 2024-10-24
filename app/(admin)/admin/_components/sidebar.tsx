@@ -8,7 +8,7 @@ import { BsFillPostcardFill } from "react-icons/bs";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { usePathname } from "next/navigation";
-import { Building2, Code, Lightbulb, Ratio } from "lucide-react";
+import { Building2, Code, Lightbulb, Ratio, Map } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { GrServices } from "react-icons/gr";
 import { UserRole } from "@prisma/client";
@@ -156,6 +156,17 @@ const Sidebar = ({ name, image }: SidebarProps) => {
                 ))}
               </li>
             ))}
+
+          <li>
+            <Link
+              target="_blank"
+              href="https://nexgeno.in/sitemap.xml"
+              className="p-5 flex items-center gap-5 my-1 rounded-lg border-[1px] "
+            >
+              <Map className="h-5 w-5" />
+              Sitemap Generate
+            </Link>
+          </li>
         </ul>
       </div>
     </>
