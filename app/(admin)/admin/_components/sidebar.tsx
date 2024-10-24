@@ -164,7 +164,7 @@ const Sidebar = ({ name, image }: SidebarProps) => {
               className="p-5 flex items-center gap-5 my-1 rounded-lg border-[1px] "
             >
               <Map className="h-5 w-5" />
-              Sitemap Generate
+              Sitemaps Generate
             </Link>
           </li>
         </ul>
