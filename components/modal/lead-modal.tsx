@@ -14,6 +14,9 @@ interface LeadModalProps {
   email: string;
   mobile: string;
   message: string;
+  company_name: string;
+  interested_service: string;
+  project_budget: string;
 }
 
 export const LeadModal: React.FC<LeadModalProps> = ({
@@ -23,6 +26,9 @@ export const LeadModal: React.FC<LeadModalProps> = ({
   email,
   mobile,
   message,
+  company_name,
+  interested_service,
+  project_budget,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -56,7 +62,15 @@ export const LeadModal: React.FC<LeadModalProps> = ({
         </div>
         <div className="flex items-center gap-2">
           <MailOpen />
-          <span>{message}</span>
+          <span>{company_name}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <MailOpen />
+          <span>{interested_service}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <MailOpen />
+          <span>{project_budget} </span>
         </div>
       </div>
     </Modal>

@@ -15,6 +15,7 @@ import {
   Ratio,
   UsersRound,
   Map,
+  User2,
 } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { GrServices } from "react-icons/gr";
@@ -103,6 +104,12 @@ const Sidebar = ({ name, image }: SidebarProps) => {
           path: "/admin/solutions",
           icon: <Lightbulb />,
         },
+        {
+          id: 8,
+          title: "Our Clients",
+          path: "/admin/clients",
+          icon: <User2 />,
+        },
       ],
     },
   ];
@@ -142,38 +149,40 @@ const Sidebar = ({ name, image }: SidebarProps) => {
             </li>
           ))}
 
-          {user?.role === UserRole.ADMIN &&
-            adminRoutes.map((item) => (
-              <li key={item.id}>
-                <span className="font-bold text-xs my-2">{item.title}</span>
-                {item.list.map((item) => (
-                  <>
+          {user?.role === UserRole.ADMIN && (
+            <>
+              {adminRoutes.map((item) => (
+                <li key={item.id}>
+                  <span className="font-bold text-xs my-2">{item.title}</span>
+                  {item.list.map((subItem) => (
                     <Link
-                      href={item.path}
-                      key={item.id}
-                      className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
-                        pathname === item.path &&
-                        " text-[#17c1e8] font-semibold shadow-lg"
-                      } `}
+                      href={subItem.path}
+                      key={subItem.id}
+                      className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px] ${
+                        pathname === subItem.path
+                          ? "text-[#17c1e8] font-semibold shadow-lg"
+                          : ""
+                      }`}
                     >
-                      {item.icon}
-                      {item.title}
+                      {subItem.icon}
+                      {subItem.title}
                     </Link>
-                  </>
-                ))}
-              </li>
-            ))}
+                  ))}
+                </li>
+              ))}
 
-          <li>
-            <Link
-              target="_blank"
-              href="https://nexgeno.in/sitemap.xml"
-              className="p-5 flex items-center gap-5 my-1 rounded-lg border-[1px] "
-            >
-              <Map className="h-5 w-5" />
-              Sitemap Generate
-            </Link>
-          </li>
+              <li>
+                <Link
+                  target="_blank"
+                  href="https://nexgeno.in/sitemap.xml"
+                  className="p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]"
+                >
+                  <Map className="h-5 w-5" />
+                  Sitemap Generate
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </>

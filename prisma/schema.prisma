@@ -85,6 +85,9 @@ model Leads {
   email   String
   mobile  String
   subject String
+  company_name String?
+  interested_service String?
+  project_budget String?
   message String
 
   createdAt DateTime @default(now())
