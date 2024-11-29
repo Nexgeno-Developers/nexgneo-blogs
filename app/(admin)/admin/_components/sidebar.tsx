@@ -8,7 +8,7 @@ import { BsFillPostcardFill } from "react-icons/bs";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { usePathname } from "next/navigation";
-import { Building2, Code, Lightbulb, Ratio } from "lucide-react";
+import { Building2, Code, Lightbulb, Ratio, Map } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { GrServices } from "react-icons/gr";
 import { UserRole } from "@prisma/client";
@@ -96,12 +96,6 @@ const Sidebar = ({ name, image }: SidebarProps) => {
           path: "/admin/solutions",
           icon: <Lightbulb />,
         },
-        {
-          id: 8,
-          title: "Our Clients",
-          path: "/admin/clients",
-          icon: <User2 />,
-        },
       ],
     },
   ];
@@ -141,28 +135,38 @@ const Sidebar = ({ name, image }: SidebarProps) => {
             </li>
           ))}
 
-          {user?.role === UserRole.ADMIN && (
-            <>
-              {adminRoutes.map((item) => (
-                <li key={item.id}>
-                  <span className="font-bold text-xs my-2">{item.title}</span>
-                  {item.list.map((subItem) => (
+          {user?.role === UserRole.ADMIN &&
+            adminRoutes.map((item) => (
+              <li key={item.id}>
+                <span className="font-bold text-xs my-2">{item.title}</span>
+                {item.list.map((item) => (
+                  <>
                     <Link
-                      href={subItem.path}
-                      key={subItem.id}
-                      className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px] ${
-                        pathname === subItem.path
-                          ? "text-[#17c1e8] font-semibold shadow-lg"
-                          : ""
-                      }`}
+                      href={item.path}
+                      key={item.id}
+                      className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
+                        pathname === item.path &&
+                        " text-[#17c1e8] font-semibold shadow-lg"
+                      } `}
                     >
-                      {subItem.icon}
-                      {subItem.title}
+                      {item.icon}
+                      {item.title}
                     </Link>
                   </>
                 ))}
               </li>
             ))}
+
+          <li>
+            <Link
+              target="_blank"
+              href="https://nexgeno.in/sitemap.xml"
+              className="p-5 flex items-center gap-5 my-1 rounded-lg border-[1px] "
+            >
+              <Map className="h-5 w-5" />
+              Sitemaps Generate
+            </Link>
+          </li>
         </ul>
       </div>
     </>
