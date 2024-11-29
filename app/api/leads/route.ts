@@ -3,7 +3,17 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { name, last, email, mobile, subject, message } = await req.json();
+    const {
+      name,
+      last,
+      email,
+      mobile,
+      subject,
+      company_name,
+      interested_service,
+      project_budget,
+      message,
+    } = await req.json();
 
     const lead = await db.leads.create({
       data: {
@@ -12,6 +22,9 @@ export async function POST(req: Request) {
         email,
         mobile,
         subject,
+        company_name,
+        interested_service,
+        project_budget,
         message,
       },
     });
