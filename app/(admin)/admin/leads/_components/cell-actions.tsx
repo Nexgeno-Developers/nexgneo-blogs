@@ -59,7 +59,7 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         email={data.email}
         mobile={data.mobile}
         message={data.message}
-        company_name={data.company_name}
+        company_name={data.company_name || ""}
         interested_service={data.interested_service}
         project_budget={data.project_budget}
       />
