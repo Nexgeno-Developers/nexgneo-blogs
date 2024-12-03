@@ -171,3 +171,8 @@ model PasswordResetToken {
 
   @@unique([email, token])
 }
+
+model OurClients {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId // Correctly uses ObjectId native type
+  name  String
+}
