@@ -60,8 +60,8 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         mobile={data.mobile}
         message={data.message}
         company_name={data.company_name || ""}
-        interested_service={data.interested_service}
-        project_budget={data.project_budget}
+        interested_service={data.interested_service || ""}
+        project_budget={data.project_budget || ""}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
