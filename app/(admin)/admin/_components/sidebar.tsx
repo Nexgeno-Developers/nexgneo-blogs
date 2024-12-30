@@ -118,19 +118,18 @@ const Sidebar = ({ name, image }: SidebarProps) => {
             <li key={cat.id}>
               <span className="font-bold text-xs my-2">{cat.title}</span>
               {cat.list.map((item) => (
-                <>
-                  <Link
-                    href={item.path}
-                    key={item.id}
-                    className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
-                      pathname === item.path &&
-                      " text-[#17c1e8] font-semibold shadow-lg"
-                    } `}
-                  >
-                    {item.icon}
-                    {item.title}
-                  </Link>
-                </>
+                // Wrap this with a React.Fragment for adding key directly
+                <Link
+                  href={item.path}
+                  key={item.id} // Add key here for unique identification
+                  className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px] ${
+                    pathname === item.path &&
+                    " text-[#17c1e8] font-semibold shadow-lg"
+                  } `}
+                >
+                  {item.icon}
+                  {item.title}
+                </Link>
               ))}
             </li>
           ))}
@@ -139,20 +138,18 @@ const Sidebar = ({ name, image }: SidebarProps) => {
             adminRoutes.map((item) => (
               <li key={item.id}>
                 <span className="font-bold text-xs my-2">{item.title}</span>
-                {item.list.map((item) => (
-                  <>
-                    <Link
-                      href={item.path}
-                      key={item.id}
-                      className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px]   ${
-                        pathname === item.path &&
-                        " text-[#17c1e8] font-semibold shadow-lg"
-                      } `}
-                    >
-                      {item.icon}
-                      {item.title}
-                    </Link>
-                  </>
+                {item.list.map((subItem) => (
+                  <Link
+                    href={subItem.path}
+                    key={subItem.id} // Add key here for unique identification
+                    className={`p-5 flex items-center gap-5 my-1 rounded-lg border-[1px] ${
+                      pathname === subItem.path &&
+                      " text-[#17c1e8] font-semibold shadow-lg"
+                    } `}
+                  >
+                    {subItem.icon}
+                    {subItem.title}
+                  </Link>
                 ))}
               </li>
             ))}

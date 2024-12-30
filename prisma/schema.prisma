@@ -172,3 +172,14 @@ model PasswordResetToken {
   @@unique([email, token])
 }
 
+model Portfolio {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  images      String[]
+  title       String
+  technology  String[] // Array of strings for multiple technologies
+  category    String
+  slug        String?
+  tags        String[] // Array of strings for tags
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
