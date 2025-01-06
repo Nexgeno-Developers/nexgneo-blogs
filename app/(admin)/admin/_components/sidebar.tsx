@@ -96,6 +96,12 @@ const Sidebar = ({ name, image }: SidebarProps) => {
           path: "/admin/solutions",
           icon: <Lightbulb />,
         },
+        {
+          id: 8,
+          title: "Portfolio",
+          path: "/admin/portfolio",
+          icon: <Lightbulb />,
+        },
       ],
     },
   ];

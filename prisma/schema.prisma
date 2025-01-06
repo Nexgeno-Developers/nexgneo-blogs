@@ -174,7 +174,7 @@ model PasswordResetToken {
 
 model Portfolio {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  images      String[]
+  image       String?
   title       String
   technology  String[] // Array of strings for multiple technologies
   category    String
