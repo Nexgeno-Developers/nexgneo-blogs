@@ -58,7 +58,7 @@ export const AddPortfolioForm = () => {
         technology: values.technology.split(",").map((tech) => tech.trim()), // Convert to array
       };
       await axios.post("/api/portfolio", formattedValues);
-      toast.success("Portfolio page added successfully");
+      toast.success("Portfolio added successfully");
       router.push("/admin/portfolio");
       router.refresh();
     } catch (error) {
@@ -69,7 +69,7 @@ export const AddPortfolioForm = () => {
   return (
     <>
       <div className="max-w-3xl mx-auto mt-10">
-        <h1 className="text-2xl font-bold">Add New Portfolio Page</h1>
+        <h1 className="text-2xl font-bold">Add New Portfolio</h1>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}

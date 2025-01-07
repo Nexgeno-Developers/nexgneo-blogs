@@ -8,7 +8,14 @@ import { BsFillPostcardFill } from "react-icons/bs";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { usePathname } from "next/navigation";
-import { Building2, Code, Lightbulb, Ratio, Map } from "lucide-react";
+import {
+  Building2,
+  Code,
+  Lightbulb,
+  Ratio,
+  Map,
+  FileCode2,
+} from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { GrServices } from "react-icons/gr";
 import { UserRole } from "@prisma/client";
@@ -100,7 +107,7 @@ const Sidebar = ({ name, image }: SidebarProps) => {
           id: 8,
           title: "Portfolio",
           path: "/admin/portfolio",
-          icon: <Lightbulb />,
+          icon: <FileCode2 />,
         },
       ],
     },
