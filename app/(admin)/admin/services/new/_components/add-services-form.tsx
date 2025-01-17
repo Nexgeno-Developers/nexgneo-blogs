@@ -31,9 +31,7 @@ const formSchema = z.object({
   title: z.string().min(3, {
     message: "Title is Required minimum 3 char",
   }),
-  menuTitle: z.string().min(3, {
-    message: "Menu Title is Required minimum 3 char",
-  }),
+  menuTitle: z.string().optional(),
   desc: z.string().min(3, {
     message: "Desc is Required minimum 3 char",
   }),
