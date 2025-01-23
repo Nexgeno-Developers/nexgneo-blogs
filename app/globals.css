@@ -70,6 +70,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -81,4 +82,44 @@
 
 .content {
   flex: 4;
+}
+
+
+.main_class_blog h1,
+.main_class_blog h2,
+.main_class_blog h3,
+.main_class_blog h4,
+.main_class_blog h5,
+.main_class_blog h6,
+.main_class_blog p,
+.main_class_blog ul,
+.main_class_blog li,
+.main_class_blog a {
+  font-family: '__Inter_d65c78', '__Inter_Fallback_d65c78' !important;
+  font-style: normal !important;
+}
+
+.main_class_blog p,
+.main_class_blog li {
+  font-size: 16px !important;
+  line-height: 26px !important;
+}
+
+.main_class_blog h1,
+.main_class_blog h2 {
+  padding-top: 30px !important;
+  padding-bottom: 5px !important;
+}
+
+.main_class_blog p {
+  padding-bottom: 20px !important;
+}
+
+.main_class_blog ul {
+  padding-bottom: 20px !important;
+}
+
+.main_class_blog h4 {
+  font-size: 16px !important;
+  font-weight: 600;
 }

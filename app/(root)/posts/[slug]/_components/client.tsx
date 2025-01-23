@@ -90,7 +90,7 @@ export const Client = ({
               </div>
             </div>
           </div>
-          <div className="my-20">
+          <div className="my-20 main_class_blog">
             <Preview value={textEditor!} />
           </div>
         </div>
