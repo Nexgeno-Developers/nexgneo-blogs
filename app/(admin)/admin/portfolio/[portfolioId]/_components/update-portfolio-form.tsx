@@ -27,14 +27,10 @@ interface UpdatePortfolioFormProps {
 
 const formSchema = z.object({
   image: z.string().min(1, { message: "At least one image is required" }),
-  tags: z
-    .array(z.string())
-    .min(1, { message: "At least one alt tag is required" }),
+  category: z.string().min(1, {
+    message: "Category is required",
+  }),
   title: z.string().min(3, { message: "Title is required (min 3 chars)" }),
-  menuTitle: z
-    .string()
-    .min(3, { message: "Menu Title is required (min 3 chars)" }),
-  desc: z.string().min(3, { message: "Description is required (min 3 chars)" }),
   slug: z.string().optional(),
   technology: z
     .array(z.string())
@@ -48,8 +44,8 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       image: data?.image || "",
-      tags: data?.tags || [],
       title: data?.title || "",
+      category: data?.category || "",
       slug: data?.slug || "",
       technology: data?.technology || [],
     },
@@ -61,7 +57,8 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
     try {
       await axios.patch(`/api/portfolio/${data?.id}`, values);
       toast.success("Portfolio page updated successfully!");
-      router.push("/admin/portfolio");
+
+      // Instead of pushing, just refresh the current page
       router.refresh();
     } catch (error) {
       toast.error("An error occurred while updating the portfolio.");
@@ -131,6 +128,24 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
             )}
           />
 
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isSubmitting}
+                    placeholder="Enter category"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           {/* Technology Field */}
           <FormField
             control={form.control}
@@ -148,25 +163,6 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
                         e.target.value.split(",").map((tech) => tech.trim())
                       )
                     }
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Tags Field */}
-          <FormField
-            control={form.control}
-            name="tags"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Tags</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isSubmitting}
-                    placeholder="Enter tags"
-                    {...field}
                   />
                 </FormControl>
                 <FormMessage />

@@ -62,11 +62,11 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          {/* <DropdownMenuItem
+          <DropdownMenuItem
             onClick={() => router.push(`/admin/portfolio/${data.id}`)}
           >
             <Edit className="mr-1 h-4 w-4" /> Update
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-1 h-4 w-4" /> Delete
           </DropdownMenuItem>

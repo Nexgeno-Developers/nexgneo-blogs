@@ -97,7 +97,7 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
             </span>
           </div>
 
-          <div className="grid lg:grid-cols-3 grid-cols-1 gap-10">
+          <div className="grid lg:grid-cols-3 grid-cols-1 md:gap-10">
             <PostsList items={posts} />
             <div className="">
               <div className="sticky top-20">
