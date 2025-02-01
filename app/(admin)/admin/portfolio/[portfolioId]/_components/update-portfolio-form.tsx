@@ -27,14 +27,18 @@ interface UpdatePortfolioFormProps {
 
 const formSchema = z.object({
   image: z.string().min(1, { message: "At least one image is required" }),
-  category: z.string().min(1, {
-    message: "Category is required",
-  }),
+  category: z.string().min(1, { message: "Category is required" }),
   title: z.string().min(3, { message: "Title is required (min 3 chars)" }),
   slug: z.string().optional(),
   technology: z
     .array(z.string())
     .min(1, { message: "At least one technology is required" }),
+  series: z
+    .union([
+      z.number().min(1, { message: "Series must be at least 1" }),
+      z.null(),
+    ])
+    .optional(), // Allow null or a number >= 1
 });
 
 export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
@@ -48,6 +52,7 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
       category: data?.category || "",
       slug: data?.slug || "",
       technology: data?.technology || [],
+      series: data?.series ?? null, // Default series to 1 if not provided
     },
   });
 
@@ -57,8 +62,6 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
     try {
       await axios.patch(`/api/portfolio/${data?.id}`, values);
       toast.success("Portfolio page updated successfully!");
-
-      // Instead of pushing, just refresh the current page
       router.refresh();
     } catch (error) {
       toast.error("An error occurred while updating the portfolio.");
@@ -128,6 +131,7 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
             )}
           />
 
+          {/* Category Field */}
           <FormField
             control={form.control}
             name="category"
@@ -163,6 +167,31 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
                         e.target.value.split(",").map((tech) => tech.trim())
                       )
                     }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Series Field */}
+          <FormField
+            control={form.control}
+            name="series"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Series (optional)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="Enter order number (optional)"
+                    value={field.value ?? ""}
+                    onChange={(e) => {
+                      const value =
+                        e.target.value === "" ? null : Number(e.target.value);
+                      field.onChange(value);
+                    }}
+                    disabled={isSubmitting}
                   />
                 </FormControl>
                 <FormMessage />
