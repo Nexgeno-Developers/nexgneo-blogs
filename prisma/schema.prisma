@@ -105,6 +105,7 @@ model Services {
   metaDesc  String
   content   String
   whyChoose String?
+  showInMenu   Boolean?
   menuTitle String?
 
   createdAt DateTime @default(now())
@@ -122,6 +123,7 @@ model HireDeveloper {
   metaDesc  String
   content   String
   whyChoose String?
+  showInMenu   Boolean?
   menuTitle String?
 
   createdAt DateTime @default(now())
@@ -139,6 +141,7 @@ model Industries {
   metaDesc  String
   content   String
   whyChoose String?
+  showInMenu   Boolean?
   menuTitle String?
 
 
@@ -157,6 +160,7 @@ model Solutions {
   metaDesc  String
   content   String
   whyChoose String?
+  showInMenu   Boolean?
   menuTitle String?
 
   createdAt DateTime @default(now())

@@ -13,6 +13,7 @@ import {
 import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch"; // Import Switch
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Industries, Services } from "@prisma/client";
 import axios from "axios";
@@ -61,6 +62,7 @@ const formSchema = z.object({
   whyChoose: z.string().min(3, {
     message: "whyChoose is required",
   }),
+  showInMenu: z.boolean().default(false),
 });
 
 export const UpdateIndustriesForm = ({ data }: UpdateIndustriesFormProps) => {
@@ -79,6 +81,7 @@ export const UpdateIndustriesForm = ({ data }: UpdateIndustriesFormProps) => {
       metaDesc: data?.metaDesc || "",
       content: data?.content || "",
       whyChoose: data?.whyChoose || "",
+      showInMenu: data?.showInMenu ?? false, // Set default to false
     },
   });
 
@@ -264,6 +267,25 @@ export const UpdateIndustriesForm = ({ data }: UpdateIndustriesFormProps) => {
                   <FormLabel>Why Choose Content</FormLabel>
                   <FormControl>
                     <Editor {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* New Checkbox Field for Show in Menu */}
+            <FormField
+              control={form.control}
+              name="showInMenu"
+              render={({ field }) => (
+                <FormItem className="flex items-center space-x-2">
+                  <FormLabel>Show in Menu</FormLabel>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      disabled={isSubmitting}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
