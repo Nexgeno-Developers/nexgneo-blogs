@@ -178,7 +178,7 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
             name="tags"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tags</FormLabel> {/* Fixed incorrect label */}
+                <FormLabel>Tags</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isSubmitting}
@@ -186,7 +186,9 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
                     value={field.value.join(", ")}
                     onChange={(e) =>
                       field.onChange(
-                        e.target.value.split(",").map((tag) => tag.trim())
+                        e.target.value
+                          .split(",")
+                          .map((tag) => tag.trim().toLowerCase()) // Convert to lowercase
                       )
                     }
                   />

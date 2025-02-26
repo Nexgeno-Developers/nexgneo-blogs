@@ -60,7 +60,7 @@ export const AddPortfolioForm = () => {
       const formattedValues = {
         ...values,
         technology: values.technology.split(",").map((tech) => tech.trim()), // Convert to array
-        tags: values.tags.split(",").map((tag) => tag.trim()), // Convert to array
+        tags: values.tags.split(",").map((tag) => tag.trim().toLowerCase()), // Convert to array
       };
       await axios.post("/api/portfolio", formattedValues);
       toast.success("Portfolio added successfully");
