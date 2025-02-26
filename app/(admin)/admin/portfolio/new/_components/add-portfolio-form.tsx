@@ -27,6 +27,9 @@ const formSchema = z.object({
     message: "Category is required",
   }),
   slug: z.string().optional(),
+  tags: z.string().min(1, {
+    message: "tags is required",
+  }),
   technology: z.string().min(1, {
     message: "Technology is required",
   }),
@@ -45,6 +48,7 @@ export const AddPortfolioForm = () => {
       category: "",
       slug: "",
       technology: "",
+      tags: "",
       image: "",
     },
   });
@@ -56,6 +60,7 @@ export const AddPortfolioForm = () => {
       const formattedValues = {
         ...values,
         technology: values.technology.split(",").map((tech) => tech.trim()), // Convert to array
+        tags: values.tags.split(",").map((tag) => tag.trim()), // Convert to array
       };
       await axios.post("/api/portfolio", formattedValues);
       toast.success("Portfolio added successfully");
@@ -158,6 +163,24 @@ export const AddPortfolioForm = () => {
                     <Input
                       disabled={isSubmitting}
                       placeholder="Enter technologies, separated by commas (e.g., React, Next.js)"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="tags"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tags</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="Enter Tags, separated by commas (e.g., React, Next.js)"
                       {...field}
                     />
                   </FormControl>

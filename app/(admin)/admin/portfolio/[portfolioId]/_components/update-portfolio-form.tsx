@@ -25,20 +25,17 @@ interface UpdatePortfolioFormProps {
   data: Portfolio | null;
 }
 
+// Validation Schema
 const formSchema = z.object({
   image: z.string().min(1, { message: "At least one image is required" }),
   category: z.string().min(1, { message: "Category is required" }),
   title: z.string().min(3, { message: "Title is required (min 3 chars)" }),
   slug: z.string().optional(),
+  tags: z.array(z.string()).min(1, { message: "At least one tag is required" }), // Fixed tags type
   technology: z
     .array(z.string())
     .min(1, { message: "At least one technology is required" }),
-  series: z
-    .union([
-      z.number().min(1, { message: "Series must be at least 1" }),
-      z.null(),
-    ])
-    .optional(), // Allow null or a number >= 1
+  series: z.union([z.number().min(1), z.null()]).optional(),
 });
 
 export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
@@ -52,7 +49,8 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
       category: data?.category || "",
       slug: data?.slug || "",
       technology: data?.technology || [],
-      series: data?.series ?? null, // Default series to 1 if not provided
+      tags: data?.tags || [], // Fixed type consistency
+      series: data?.series ?? null,
     },
   });
 
@@ -165,6 +163,30 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
                     onChange={(e) =>
                       field.onChange(
                         e.target.value.split(",").map((tech) => tech.trim())
+                      )
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Tags Field */}
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tags</FormLabel> {/* Fixed incorrect label */}
+                <FormControl>
+                  <Input
+                    disabled={isSubmitting}
+                    placeholder="Enter tags (comma-separated)"
+                    value={field.value.join(", ")}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value.split(",").map((tag) => tag.trim())
                       )
                     }
                   />
