@@ -36,6 +36,7 @@ const formSchema = z.object({
     .array(z.string())
     .min(1, { message: "At least one technology is required" }),
   series: z.union([z.number().min(1), z.null()]).optional(),
+  showInCaseStudy: z.boolean().default(false), // New field for Case Study
 });
 
 export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
@@ -51,6 +52,7 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
       technology: data?.technology || [],
       tags: data?.tags || [], // Fixed type consistency
       series: data?.series ?? null,
+      showInCaseStudy: data?.showInCaseStudy ?? false, // Default to false
     },
   });
 
@@ -90,7 +92,6 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
               </FormItem>
             )}
           />
-
           {/* Title Field */}
           <FormField
             control={form.control}
@@ -109,7 +110,6 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
               </FormItem>
             )}
           />
-
           {/* Slug Field */}
           <FormField
             control={form.control}
@@ -128,7 +128,6 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
               </FormItem>
             )}
           />
-
           {/* Category Field */}
           <FormField
             control={form.control}
@@ -147,7 +146,6 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
               </FormItem>
             )}
           />
-
           {/* Technology Field */}
           <FormField
             control={form.control}
@@ -171,7 +169,6 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
               </FormItem>
             )}
           />
-
           {/* Tags Field */}
           <FormField
             control={form.control}
@@ -197,7 +194,6 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
               </FormItem>
             )}
           />
-
           {/* Series Field */}
           <FormField
             control={form.control}
@@ -222,7 +218,25 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
               </FormItem>
             )}
           />
-
+          <FormField
+            control={form.control}
+            name="showInCaseStudy"
+            render={({ field }) => (
+              <FormItem className="flex items-center">
+                <FormControl>
+                  <input
+                    type="checkbox"
+                    checked={field.value}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                    disabled={isSubmitting}
+                    className="h-6 w-6 rounded border-gray-300 text-blue-600 focus:ring-blue-500 pt-0 relative top-[2px] right-[5px]"
+                  />
+                </FormControl>
+                <FormLabel>Show in Case Study</FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           {/* Submit Button */}
           <div className="text-end">
             <Button type="submit" className="mt-4" disabled={isSubmitting}>
