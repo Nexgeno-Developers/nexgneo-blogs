@@ -62,6 +62,7 @@ const formSchema = z.object({
   whyChoose: z.string().min(3, {
     message: "whyChoose is required",
   }),
+  process: z.string().optional(),
   showInMenu: z.boolean().default(false),
 });
 
@@ -81,6 +82,7 @@ export const UpdateSolutionForm = ({ data }: UpdateSolutionFormProps) => {
       metaDesc: data?.metaDesc || "",
       content: data?.content || "",
       whyChoose: data?.whyChoose || "",
+      process: data?.process || "",
       showInMenu: data?.showInMenu ?? false, // Set default to false
     },
   });
@@ -267,6 +269,22 @@ export const UpdateSolutionForm = ({ data }: UpdateSolutionFormProps) => {
                   <FormLabel>Why Choose Content</FormLabel>
                   <FormControl>
                     <Editor {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="process"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Process Section Content</FormLabel>
+                  <FormControl>
+                    {/* Ensure Editor is wrapped inside a single element */}
+                    <div>
+                      <Editor {...field} value={field.value ?? ""} />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

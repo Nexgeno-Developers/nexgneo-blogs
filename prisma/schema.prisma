@@ -160,6 +160,7 @@ model Solutions {
   metaDesc  String
   content   String
   whyChoose String?
+  process String?
   showInMenu   Boolean?
   menuTitle String?
 
