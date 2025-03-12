@@ -20,17 +20,20 @@ export const Editor = ({ onChange, value }: EditorProps) => {
     () => ({
       toolbar: {
         container: [
-          [{ header: [1, 2, 3, 4, 5, 6] }],
-          ["bold", "italic", "underline", "strike", "blockquote"],
+          [{ header: [1, 2, 3, 4, 5, 6, false] }], // Headers
+          ["bold", "italic", "underline", "strike", "blockquote"], // Text styles
+          [{ script: "sub" }, { script: "super" }], // Subscript / Superscript
           [
             { list: "ordered" },
             { list: "bullet" },
             { indent: "-1" },
             { indent: "+1" },
-          ],
-          ["link", "image", "video"],
-          ["clean"],
-          ["normal-text"], // Add 'normal-text' tool
+          ], // Lists & indentation
+          ["link", "image", "video"], // Media
+          [{ color: [] }, { background: [] }], // Colors
+          [{ align: [] }], // Alignment
+          ["code-block"], // ✅ Add Code Block Option
+          ["clean"], // Remove formatting
         ],
       },
     }),
@@ -48,9 +51,14 @@ export const Editor = ({ onChange, value }: EditorProps) => {
       "list",
       "bullet",
       "indent",
+      "script",
       "link",
       "image",
       "video",
+      "color",
+      "background",
+      "align",
+      "code-block", // ✅ Add Code Block Format
     ],
     []
   );

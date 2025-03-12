@@ -62,6 +62,7 @@ const formSchema = z.object({
   whyChoose: z.string().min(3, {
     message: "whyChoose is required",
   }),
+  series: z.union([z.number().min(1), z.null()]).optional(),
   showInMenu: z.boolean().default(false),
 });
 
@@ -82,6 +83,7 @@ export const UpdateHireDeveloperForm = ({
       metaTitle: data?.metaTitle || "",
       metaDesc: data?.metaDesc || "",
       content: data?.content || "",
+      series: data?.series ?? null,
       whyChoose: data?.whyChoose || "",
       showInMenu: data?.showInMenu ?? false, // Set default to false
     },
@@ -273,7 +275,30 @@ export const UpdateHireDeveloperForm = ({
                 </FormItem>
               )}
             />
-
+            {/* Series Field */}
+            <FormField
+              control={form.control}
+              name="series"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Series (optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter order number (optional)"
+                      value={field.value ?? ""}
+                      onChange={(e) => {
+                        const value =
+                          e.target.value === "" ? null : Number(e.target.value);
+                        field.onChange(value);
+                      }}
+                      disabled={isSubmitting}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             {/* New Checkbox Field for Show in Menu */}
             <FormField
               control={form.control}

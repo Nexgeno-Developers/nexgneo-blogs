@@ -104,6 +104,7 @@ model Services {
   metaTitle String
   metaDesc  String
   content   String
+  series      Int?
   whyChoose String?
   showInMenu   Boolean?
   menuTitle String?
@@ -123,6 +124,7 @@ model HireDeveloper {
   metaDesc  String
   content   String
   whyChoose String?
+  series      Int?
   showInMenu   Boolean?
   menuTitle String?
 
@@ -140,6 +142,7 @@ model Industries {
   metaTitle String
   metaDesc  String
   content   String
+  series      Int?
   whyChoose String?
   showInMenu   Boolean?
   menuTitle String?
@@ -161,6 +164,7 @@ model Solutions {
   content   String
   whyChoose String?
   process String?
+  series      Int?
   showInMenu   Boolean?
   menuTitle String?
 

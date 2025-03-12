@@ -41,6 +41,7 @@ const formSchema = z.object({
   desc: z.string().min(3, {
     message: "Desc is Required minimum 3 char",
   }),
+  series: z.union([z.number().min(1), z.null()]).optional(),
   slug: z
     .string()
     .min(3, {
@@ -83,6 +84,7 @@ export const UpdateSolutionForm = ({ data }: UpdateSolutionFormProps) => {
       content: data?.content || "",
       whyChoose: data?.whyChoose || "",
       process: data?.process || "",
+      series: data?.series ?? null,
       showInMenu: data?.showInMenu ?? false, // Set default to false
     },
   });
@@ -285,6 +287,31 @@ export const UpdateSolutionForm = ({ data }: UpdateSolutionFormProps) => {
                     <div>
                       <Editor {...field} value={field.value ?? ""} />
                     </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Series Field */}
+            <FormField
+              control={form.control}
+              name="series"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Series (optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter order number (optional)"
+                      value={field.value ?? ""}
+                      onChange={(e) => {
+                        const value =
+                          e.target.value === "" ? null : Number(e.target.value);
+                        field.onChange(value);
+                      }}
+                      disabled={isSubmitting}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
