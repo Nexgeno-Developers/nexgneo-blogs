@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
-
 import "react-quill/dist/quill.snow.css";
 
 interface EditorProps {
@@ -20,21 +19,24 @@ export const Editor = ({ onChange, value }: EditorProps) => {
     () => ({
       toolbar: {
         container: [
-          [{ header: [1, 2, 3, 4, 5, 6, false] }], // Headers
-          ["bold", "italic", "underline", "strike", "blockquote"], // Text styles
-          [{ script: "sub" }, { script: "super" }], // Subscript / Superscript
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          ["bold", "italic", "underline", "strike", "blockquote"],
+          [{ script: "sub" }, { script: "super" }],
           [
             { list: "ordered" },
             { list: "bullet" },
             { indent: "-1" },
             { indent: "+1" },
-          ], // Lists & indentation
-          ["link", "image", "video"], // Media
-          [{ color: [] }, { background: [] }], // Colors
-          [{ align: [] }], // Alignment
-          ["code-block"], // ✅ Add Code Block Option
-          ["clean"], // Remove formatting
+          ],
+          ["link", "image", "video"],
+          [{ color: [] }, { background: [] }],
+          [{ align: [] }],
+          ["code-block"], // ✅ Code Block Support
+          ["clean"],
         ],
+      },
+      clipboard: {
+        matchVisual: false, // ✅ Allows pasting HTML without stripping tags
       },
     }),
     []
@@ -58,7 +60,7 @@ export const Editor = ({ onChange, value }: EditorProps) => {
       "color",
       "background",
       "align",
-      "code-block", // ✅ Add Code Block Format
+      "code-block",
     ],
     []
   );

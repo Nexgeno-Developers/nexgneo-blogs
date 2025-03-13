@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as z from "zod";
+import { TinyEditor } from "@/components/tynimceditor";
 
 interface UpdateSolutionFormProps {
   data: Solutions | null;
@@ -285,7 +286,10 @@ export const UpdateSolutionForm = ({ data }: UpdateSolutionFormProps) => {
                   <FormControl>
                     {/* Ensure Editor is wrapped inside a single element */}
                     <div>
-                      <Editor {...field} value={field.value ?? ""} />
+                      <TinyEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                     </div>
                   </FormControl>
                   <FormMessage />
