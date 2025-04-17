@@ -1,72 +1,56 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
+<?xml version="1.0" encoding="UTF-8"?> 
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
 <url>
-  <loc>https://blog.nexgeno.in/</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>1.00</priority>
+  <loc>http://blog.nexgeno.in/</loc>
 </url>
 <url>
-  <loc>https://blog.nexgeno.in/auth/login</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>0.80</priority>
+  <loc>http://blog.nexgeno.in/tel:+919004466166</loc>
 </url>
 <url>
-  <loc>https://blog.nexgeno.in/posts/digital-marketing-strategies-for-indian-startups.htm</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>0.80</priority>
+  <loc>http://blog.nexgeno.in/tel:+91 9004466166</loc>
 </url>
 <url>
-  <loc>https://blog.nexgeno.in/posts/benefits-of-responsive-web-design-for-indian-businesses.htm</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>0.80</priority>
+  <loc>http://blog.nexgeno.in/privacy-policy</loc>
 </url>
 <url>
-  <loc>https://blog.nexgeno.in/posts/how-to-choose-the-right-web-development-company-in-india.htm</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>0.80</priority>
+  <loc>http://blog.nexgeno.in/terms-conditions</loc>
 </url>
 <url>
-  <loc>https://blog.nexgeno.in/posts/top-web-design-trends-in-india-2025.htm</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>0.80</priority>
+  <loc>http://blog.nexgeno.in/posts/top-10-website-designing-trends-for-2025-in-mumbai.htm</loc>
 </url>
 <url>
-  <loc>https://blog.nexgeno.in/posts/how-to-become-an-seo-expert-in-2025.htm</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>0.80</priority>
+  <loc>http://blog.nexgeno.in/posts/digital-marketing-strategies-for-indian-startups.htm</loc>
 </url>
 <url>
-  <loc>https://blog.nexgeno.in/posts/top-50-search-engine-list.htm</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>0.80</priority>
+  <loc>http://blog.nexgeno.in/posts/benefits-of-responsive-web-design-for-indian-businesses.htm</loc>
 </url>
 <url>
-  <loc>https://blog.nexgeno.in/posts/types-of-digital-marketing.htm</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>0.80</priority>
+  <loc>http://blog.nexgeno.in/posts/how-to-choose-the-right-web-development-company-in-india.htm</loc>
 </url>
 <url>
-  <loc>https://blog.nexgeno.in/posts/search-google-or-type-a-url-which-is-better.htm</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>0.80</priority>
+  <loc>http://blog.nexgeno.in/posts/top-web-design-trends-in-india-2025.htm</loc>
 </url>
 <url>
-  <loc>https://blog.nexgeno.in/posts/how-to-get-your-customers-to-market-your-business-for-you.htm</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>0.80</priority>
+  <loc>http://blog.nexgeno.in/posts/how-to-become-an-seo-expert-in-2025.htm</loc>
 </url>
 <url>
-  <loc>https://blog.nexgeno.in/auth/reset</loc>
-  <lastmod>2025-02-21T05:54:18+00:00</lastmod>
-  <priority>0.64</priority>
+  <loc>http://blog.nexgeno.in/posts/top-50-search-engine-list.htm</loc>
 </url>
-
-
-</urlset>
+<url>
+  <loc>http://blog.nexgeno.in/posts/types-of-digital-marketing.htm</loc>
+</url>
+<url>
+  <loc>http://blog.nexgeno.in/posts/search-google-or-type-a-url-which-is-better</loc>
+</url>
+<url>
+  <loc>http://blog.nexgeno.in/posts/how-to-get-your-customers-to-market-your-business-for-you.htm</loc>
+</url>
+<url>
+  <loc>http://blog.nexgeno.in/auth/reset</loc>
+</url>
+<url>
+  <loc></loc>
+</url>
+<url>
+  <loc>http://blog.nexgeno.in/auth/login</loc>
+</url>
