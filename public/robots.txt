@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /cdn-cgi/
+Disallow: /*/feed/
+Disallow: /auth/login
+Allow: /sitemap.xml
+
+Sitemap: https://blog.nexgeno.in/sitemap.xml
