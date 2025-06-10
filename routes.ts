@@ -9,6 +9,8 @@ export const publicRoutes = [
   `/posts/:path*`,
   "/api/posts/:path*/views",
   "/api/leads",
+  "/sitemap",
+  "/sitemap.xml",
 ];
 
 /**
