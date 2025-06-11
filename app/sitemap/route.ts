@@ -28,21 +28,6 @@ export async function GET() {
       </url>
     `);
 
-    // Services
-    const services = await db.services.findMany({
-      where: { showInMenu: true },
-      select: { slug: true },
-    });
-
-    const serviceEntries = services.map((item) => `
-      <url>
-        <loc>${baseUrl}/services/${encodeURIComponent(item.slug)}</loc>
-        <lastmod>${new Date().toISOString()}</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.7</priority>
-      </url>
-    `);
-
     // Blog Posts
     const posts = await db.post.findMany({
       where: { isPublished: true },
@@ -80,7 +65,6 @@ export async function GET() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${[
   ...staticEntries,
-  ...serviceEntries,
   ...blogEntries,
   ...categoryEntries,
 ].join("")}
