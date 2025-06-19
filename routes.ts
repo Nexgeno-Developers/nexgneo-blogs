@@ -11,6 +11,7 @@ export const publicRoutes = [
   "/api/leads",
   "/sitemap",
   "/sitemap.xml",
+  "/robots.txt",
 ];
 
 /**

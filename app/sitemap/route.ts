@@ -1,87 +1,72 @@
 import { db } from "@/lib/db";
-import fs from "fs/promises";
-import path from "path";
 
-function slugify(str: string): string {
-  return str
-    .toLowerCase()
-    .trim()
-    .replace(/[\s\W-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+interface SitemapEntry {
+  url: string;
+  lastModified?: string;
+  changeFrequency?: "yearly" | "monthly" | "weekly" | "daily" | "never";
+  priority?: number;
 }
 
-const baseUrl = "https://blog.nexgeno.in";
+interface BlogPost {
+  slug: string;
+  updatedAt: Date;
+  createdAt: Date;
+}
+
+interface BlogCategory {
+  name: string;
+}
 
 export async function GET() {
-  try {
-    console.log("✅ /sitemap endpoint hit");
+  const baseUrl = "https://blog.nexgeno.in";
 
-    // Static URLs
-    const staticUrls = ["", "/blog"];
+  const posts: BlogPost[] = await db.post.findMany({
+    where: { isPublished: true },
+    select: { slug: true, updatedAt: true, createdAt: true },
+  });
 
-    const staticEntries = staticUrls.map((url) => `
-      <url>
-        <loc>${baseUrl}${url}</loc>
-        <lastmod>${new Date().toISOString()}</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>${url === "" ? "1.0" : "0.8"}</priority>
-      </url>
-    `);
+  const categories: BlogCategory[] = await db.category.findMany({
+    select: { name: true },
+  });
 
-    // Blog Posts
-    const posts = await db.post.findMany({
-      where: { isPublished: true },
-      select: { slug: true, updatedAt: true, createdAt: true },
-    });
+  const staticEntries = [
+    "",
+    "/blog",
+  ].map((path) => `
+    <url>
+      <loc>${baseUrl}${path}</loc>
+      <lastmod>${new Date().toISOString()}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>${path === "" ? "1.0" : "0.8"}</priority>
+    </url>
+  `);
 
-    const blogEntries = posts.map((post) => {
-      const safeSlug = post.slug //.endsWith(".htm") ? post.slug : `${post.slug}.htm`;
-      return `
-        <url>
-          <loc>${baseUrl}/posts/${encodeURIComponent(safeSlug)}</loc>
-          <lastmod>${(post.updatedAt || post.createdAt).toISOString()}</lastmod>
-          <changefreq>weekly</changefreq>
-          <priority>0.5</priority>
-        </url>
-      `;
-    });
-    
+  const postEntries = posts.map((post) => `
+    <url>
+      <loc>${baseUrl}/posts/${encodeURIComponent(post.slug)}</loc>
+      <lastmod>${(post.updatedAt || post.createdAt).toISOString()}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+    </url>
+  `);
 
-    // Dynamic Categories
-    const categories = await db.category.findMany({
-      select: { name: true },
-    });
+  const categoryEntries = categories.map((category) => `
+    <url>
+      <loc>${baseUrl}/?categoryId=${encodeURIComponent(category.name)}</loc>
+      <lastmod>${new Date().toISOString()}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  `);
 
-    const categoryEntries = categories.map((category) => `
-      <url>
-        <loc>${baseUrl}/?categoryId=${encodeURIComponent(category.name)}</loc>
-        <lastmod>${new Date().toISOString()}</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-      </url>
-    `);
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    ${[...staticEntries, ...postEntries, ...categoryEntries].join("")}
+  </urlset>`;
 
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${[
-  ...staticEntries,
-  ...blogEntries,
-  ...categoryEntries,
-].join("")}
-</urlset>`;
-
-    // Save it to public/sitemap.xml (optional, if you want it served statically)
-    const filePath = path.join(process.cwd(), "public", "sitemap.xml");
-    await fs.writeFile(filePath, sitemap, "utf-8");
-
-    return new Response(sitemap, {
-      headers: {
-        "Content-Type": "application/xml",
-      },
-    });
-
-  } catch (error) {
-    console.error("❌ Sitemap error:", error);
-    return new Response("❌ Failed to generate sitemap", { status: 500 });
-  }
+  return new Response(xml, {
+    headers: {
+      "Content-Type": "application/xml",
+    },
+  });
 }
