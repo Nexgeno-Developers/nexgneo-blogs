@@ -14,8 +14,9 @@ interface SitemapEntry {
   priority?: number;
 }
 
+
 export default async function sitemap(): Promise<SitemapEntry[]> {
-  // Fetch posts
+  
   const posts = await db.post.findMany({
     select: { slug: true, updatedAt: true },
   });
@@ -44,7 +45,7 @@ export default async function sitemap(): Promise<SitemapEntry[]> {
     changeFrequency: "monthly",
     priority: 0.7,
   }));
-  
+
   // Posts URLs
   const postsUrls: SitemapEntry[] = posts.map((post) => ({
     url: `https://blog.nexgeno.in/${post.slug}`,
