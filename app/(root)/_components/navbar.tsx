@@ -34,7 +34,7 @@ const Navbar = () => {
               </Suspense>
             )} */}
             <div className="flex items-center gap-10">
-              <Link href="tel:+919819555545">+91 9819555545</Link>
+              <Link href="tel:+91 9819555545">+91 9819555545</Link>
             </div>
           </div>
         </div>

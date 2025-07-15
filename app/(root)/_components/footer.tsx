@@ -25,7 +25,7 @@ const Footer = () => {
                   <span className="text_gradient">Digital Edge?</span>
                 </h4>
                 <Link href="#here_section" className="btn_1">
-                  Get Quick Quote
+                  Get Quick Quote 
                 </Link>
               </div>
             </div>
