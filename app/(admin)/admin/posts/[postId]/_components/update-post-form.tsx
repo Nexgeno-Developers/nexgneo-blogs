@@ -23,6 +23,7 @@ import { Editor } from "@/components/editor";
 import { Combobox } from "@/components/ui/combobox";
 import ImageUpload from "@/components/ui/image-upload";
 import { Post } from "@prisma/client";
+import { TinyEditor } from "@/components/tynimceditor";
 
 const formSchema = z.object({
   title: z.string().min(3, {
@@ -141,7 +142,10 @@ const UpdatePostForm = ({ options, initialData }: UpdatePostFormProps) => {
                   <FormItem>
                     <FormLabel>Post Brief Description</FormLabel>
                     <FormControl>
-                      <Editor {...field} />
+                      <TinyEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
