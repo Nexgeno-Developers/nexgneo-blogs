@@ -21,6 +21,7 @@ import { Editor } from "@/components/editor";
 import { Combobox } from "@/components/ui/combobox";
 import ImageUpload from "@/components/ui/image-upload";
 import { User } from "@prisma/client";
+import { TinyEditor } from "@/components/tynimceditor";
 
 interface AddPostFormProps {
   options: { label: string; value: string }[];
@@ -136,7 +137,10 @@ const AddPostForm: React.FC<AddPostFormProps> = ({ options }) => {
                   <FormItem>
                     <FormLabel>Post Brief Description</FormLabel>
                     <FormControl>
-                      <Editor {...field} />
+                      <TinyEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
