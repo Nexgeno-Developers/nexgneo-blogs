@@ -25,20 +25,20 @@ const Footer = () => {
                   <span className="text_gradient">Digital Edge?</span>
                 </h4>
                 <Link href="#here_section" className="btn_1">
-                  Get Quick Quote
+                  Get Quick Quote 
                 </Link>
               </div>
             </div>
             <div className="lg:w-[18%] text-center lg:mt-0 mt-7">
               <p className="pb-3">Call Us at</p>
-              <Link href="tel:+91 9004466166" className="font-bold text-[26px]">
-                +91 9004466166
+              <Link href="tel:+91 9819555545" className="font-bold text-[26px]">
+                +91 9819555545
               </Link>
 
               <p className="pb-3 pt-2">Or WhatsApp Now</p>
               <Link
                 target="_blank"
-                href="https://api.whatsapp.com/send?phone=++919004466166&text=Hi%2C+I+am+contacting+you+through+your+website+https%3A%2F%2Fnexgeno.in%2F"
+                href="https://api.whatsapp.com/send?phone=++919819555545&text=Hi%2C+I+am+contacting+you+through+your+website+https%3A%2F%2Fnexgeno.in%2F"
                 className="font-bold text-[26px] text-center"
               >
                 <div className="text-center">

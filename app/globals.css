@@ -95,7 +95,7 @@
 .main_class_blog ul,
 .main_class_blog li,
 .main_class_blog a {
-  font-family: '__Inter_d65c78', '__Inter_Fallback_d65c78' !important;
+  font-family: '__Inter_e8ce0c', '__Inter_Fallback_e8ce0c' !important;
   font-style: normal !important;
 }
 
@@ -210,4 +210,16 @@
   .image_right {
     text-align: center;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+a {
+  font-family: '__Inter_e8ce0c', '__Inter_Fallback_e8ce0c' !important;
 }
