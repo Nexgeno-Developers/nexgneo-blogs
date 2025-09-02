@@ -10,3 +10,4 @@ const LeadsPage = async () => {
 };
  
 export default LeadsPage;
+     
