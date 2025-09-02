@@ -41,6 +41,7 @@ const formSchema = z.object({
   desc: z.string().min(3, {
     message: "Desc is Required minimum 3 char",
   }),
+   schema: z.string().optional(),
   slug: z
     .string()
     .min(3, {
@@ -77,6 +78,7 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
       title: data?.title || "",
       menuTitle: data?.menuTitle || "",
       desc: data?.desc || "",
+      schema: data?.schema ?? undefined,
       slug: data?.slug || "",
       metaTitle: data?.metaTitle || "",
       metaDesc: data?.metaDesc || "",
@@ -297,6 +299,27 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
                 </FormItem>
               )}
             />
+
+             <FormField
+              control={form.control}
+              name="schema"
+              render={({ field }) => (
+                <FormItem> 
+                  <FormLabel>Schema Tag</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      disabled={isSubmitting}
+                      placeholder="Description"
+                      className="h-[300px]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+
             {/* New Checkbox Field for Show in Menu */}
             <FormField
               control={form.control}

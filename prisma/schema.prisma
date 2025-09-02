@@ -108,6 +108,7 @@ model Services {
   whyChoose String?
   showInMenu   Boolean?
   menuTitle String?
+  schema String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
