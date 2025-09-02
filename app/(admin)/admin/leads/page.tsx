@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import Leads from "@/app/(admin)/admin/leads/Leads";
+import Leads from "@/app/(admin)/admin/leads/Leads";   
 
 const LeadsPage = async () => {
   const leads = await db.leads.findMany({
@@ -8,5 +8,5 @@ const LeadsPage = async () => {
 
   return <Leads initialLeads={leads} />;
 };
-
+ 
 export default LeadsPage;
