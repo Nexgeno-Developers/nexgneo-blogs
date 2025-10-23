@@ -20,7 +20,7 @@ export function TinyEditor({ value, onChange }: TinyEditorProps) {
 
   return (
     <TinyMCEEditor
-      apiKey="ad41s99cpyhae0tet3sgj97fy4a4endol9c125io0zndqhg6"
+      apiKey="p56nvrhctfnrux1an0cnj7m27o86q14jk296pm1kautcr7re"
       onInit={(_evt, editor) => {
         editorRef.current = editor;
         editor.on("Change", () => {
