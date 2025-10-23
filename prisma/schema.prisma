@@ -6,6 +6,7 @@ generator client {
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+  
 }
 
 enum UserRole {
@@ -109,6 +110,11 @@ model Services {
   showInMenu   Boolean?
   menuTitle String?
   schema String?
+  portfolioIds String[] @default([]) @db.ObjectId
+  clientIds String[] @default([]) @db.ObjectId      // NEW
+  technologyIds String[] @default([]) @db.ObjectId  // NEW
+  resultIds String[] @default([]) @db.ObjectId      // NEW
+  
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -198,4 +204,43 @@ model Portfolio {
   tags        String[] @default([])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Client {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  logo      String   // URL from Cloudinary via MediaSelect
+  altTag    String?
+  name      String   // Client name
+  series    Int?     // For ordering
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Technology {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  image     String   // URL from Cloudinary via MediaSelect
+  altTag    String?
+  title     String   // Technology name (e.g., "Canva", "React")
+  category  String?  // Optional grouping (e.g., "Design Tools", "Frontend")
+  series    Int?     // For ordering
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Result {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  icon         String   // URL from Cloudinary via MediaSelect
+  iconAltTag   String?
+  title        String   // e.g., "500+"
+  desc         String   // Description text
+  image        String   // Main image URL from Cloudinary via MediaSelect
+  imageAltTag  String?
+  buttonText   String   // Button text (e.g., "View Our Work")
+  slug         String?  @unique // For SEO
+  metaTitle    String?
+  metaDesc     String?
+  series       Int?     // For ordering
+  showOnHome   Boolean  @default(false) // Toggle for homepage visibility
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

@@ -6,7 +6,7 @@ import { CgProfile } from "react-icons/cg";
 import { BiSolidCategory } from "react-icons/bi";
 import { BsFillPostcardFill } from "react-icons/bs";
 import Link from "next/link";
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaImage } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 import {
   Building2,
@@ -15,6 +15,7 @@ import {
   Ratio,
   Map,
   FileCode2,
+  Award,
 } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { GrServices } from "react-icons/gr";
@@ -108,6 +109,30 @@ const Sidebar = ({ name, image }: SidebarProps) => {
           title: "Portfolio",
           path: "/admin/portfolio",
           icon: <FileCode2 />,
+        },
+        {
+          id: 9,
+          title: "Media",
+          path: "/admin/media",
+          icon: <FaImage />,
+        },
+        {
+          id: 10,
+          title: "Our Clients",
+          path: "/admin/clients",
+          icon: <Building2 />,
+        },
+        {
+          id: 11,
+          title: "Technologies",
+          path: "/admin/technologies",
+          icon: <Code />,
+        },
+        {
+          id: 12,
+          title: "Our Results",
+          path: "/admin/results",
+          icon: <Award />,
         },
       ],
     },

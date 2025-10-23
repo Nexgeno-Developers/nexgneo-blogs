@@ -13,8 +13,11 @@ import {
 import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Portfolio } from "@prisma/client";
 import axios from "axios";
+import MediaSelect from "@/components/media/MediaSelect";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -56,9 +59,20 @@ const formSchema = z.object({
   whyChoose: z.string().min(3, {
     message: "whyChoose is required",
   }),
+  portfolioIds: z.array(z.string()).optional().default([]),
+  clientIds: z.array(z.string()).optional().default([]), // NEW
+  technologyIds: z.array(z.string()).optional().default([]), // NEW
+  resultIds: z.array(z.string()).optional().default([]),
 });
 
-export const AddServicesForm = () => {
+interface AddServicesFormProps {
+  portfolios: Portfolio[];
+  clients: any[]; // NEW
+  technologies: any[]; // NEW
+  results: any[];
+}
+
+export const AddServicesForm = ({ portfolios, clients, technologies, results }: AddServicesFormProps) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -74,6 +88,10 @@ export const AddServicesForm = () => {
       metaDesc: "",
       content: "",
       whyChoose: "",
+      portfolioIds: [],
+      clientIds: [], // NEW
+      technologyIds: [], // NEW
+      resultIds: [],
     },
   });
 
@@ -106,11 +124,10 @@ export const AddServicesForm = () => {
                 <FormItem>
                   <FormLabel>Image</FormLabel>
                   <FormControl>
-                    <ImageUpload
-                      value={field.value ? [field.value] : []}
-                      disabled={isSubmitting}
-                      onChange={(url) => field.onChange(url)}
-                      onRemove={() => field.onChange("")}
+                    <MediaSelect
+                      value={field.value}
+                      onChange={field.onChange}
+                      resourceType="image"
                     />
                   </FormControl>
                   <FormMessage />
@@ -258,6 +275,107 @@ export const AddServicesForm = () => {
                   <FormLabel>Why Choose Content</FormLabel>
                   <FormControl>
                     <Editor {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Portfolio Multi-Select */}
+            <FormField
+              control={form.control}
+              name="portfolioIds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Related Portfolios</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={portfolios.map((p) => ({
+                        value: p.id,
+                        label: p.title,
+                        category: p.category,
+                        image: p.image || undefined,
+                      }))}
+                      selected={field.value}
+                      onChange={field.onChange}
+                      placeholder="Search and select portfolios..."
+                      disabled={isSubmitting}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Our Clients Multi-Select */}
+            <FormField
+              control={form.control}
+              name="clientIds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Related Clients</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={clients.map((c) => ({
+                        value: c.id,
+                        label: c.name,
+                        image: c.logo || undefined,
+                      }))}
+                      selected={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select clients..."
+                      disabled={isSubmitting}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Our Technologies Multi-Select */}
+            <FormField
+              control={form.control}
+              name="technologyIds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Related Technologies</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={technologies.map((t) => ({
+                        value: t.id,
+                        label: t.title,
+                        image: t.image || undefined,
+                      }))}
+                      selected={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select technologies..."
+                      disabled={isSubmitting}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Our Results Multi-Select */}
+            <FormField
+              control={form.control}
+              name="resultIds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Related Results</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={results.map((r) => ({
+                        value: r.id,
+                        label: r.title,
+                        image: r.icon || undefined,
+                      }))}
+                      selected={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select results..."
+                      disabled={isSubmitting}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

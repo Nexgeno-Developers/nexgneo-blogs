@@ -14,17 +14,23 @@ import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch"; // Import Switch
+import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Services } from "@prisma/client";
+import { Services, Portfolio } from "@prisma/client";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as z from "zod";
+import MediaSelect from "@/components/media/MediaSelect";
 
 interface UpdateServiceFormProps {
   data: Services | null;
+  portfolios: Portfolio[];
+  clients: any[];
+  technologies: any[];
+  results: any[];
 }
 
 const formSchema = z.object({
@@ -41,7 +47,7 @@ const formSchema = z.object({
   desc: z.string().min(3, {
     message: "Desc is Required minimum 3 char",
   }),
-   schema: z.string().optional(),
+  schema: z.string().optional(),
   slug: z
     .string()
     .min(3, {
@@ -63,11 +69,21 @@ const formSchema = z.object({
   whyChoose: z.string().min(3, {
     message: "whyChoose is required",
   }),
+  portfolioIds: z.array(z.string()).optional().default([]),
+  clientIds: z.array(z.string()).optional().default([]),
+  technologyIds: z.array(z.string()).optional().default([]),
+  resultIds: z.array(z.string()).optional().default([]),
   series: z.union([z.number().min(1), z.null()]).optional(),
   showInMenu: z.boolean().default(false),
 });
 
-export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
+export const UpdateServiceForm = ({
+  data,
+  portfolios,
+  clients,
+  technologies,
+  results,
+}: UpdateServiceFormProps) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -85,6 +101,10 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
       content: data?.content || "",
       series: data?.series ?? null,
       whyChoose: data?.whyChoose || "",
+      portfolioIds: (data as any)?.portfolioIds || [],
+      clientIds: (data as any)?.clientIds || [],
+      technologyIds: (data as any)?.technologyIds || [],
+      resultIds: (data as any)?.resultIds || [],
       showInMenu: data?.showInMenu ?? false, // Set default to false
     },
   });
@@ -118,17 +138,17 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
                 <FormItem>
                   <FormLabel>Image</FormLabel>
                   <FormControl>
-                    <ImageUpload
-                      value={field.value ? [field.value] : []}
-                      disabled={isSubmitting}
-                      onChange={(url) => field.onChange(url)}
-                      onRemove={() => field.onChange("")}
+                    <MediaSelect
+                      value={field.value}
+                      onChange={field.onChange}
+                      resourceType="image"
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="altTag"
@@ -275,6 +295,105 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="portfolioIds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Related Portfolios</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={portfolios.map((p) => ({
+                        value: p.id,
+                        label: p.title,
+                        category: p.category,
+                        image: p.image || undefined,
+                      }))}
+                      selected={field.value}
+                      onChange={field.onChange}
+                      placeholder="Search and select portfolios..."
+                      disabled={isSubmitting}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Our Clients Multi-Select */}
+            <FormField
+              control={form.control}
+              name="clientIds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Related Clients</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={clients.map((c) => ({
+                        value: c.id,
+                        label: c.name,
+                        image: c.logo || undefined,
+                      }))}
+                      selected={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select clients..."
+                      disabled={isSubmitting}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Our Technologies Multi-Select */}
+            <FormField
+              control={form.control}
+              name="technologyIds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Related Technologies</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={technologies.map((t) => ({
+                        value: t.id,
+                        label: t.title,
+                        image: t.image || undefined,
+                      }))}
+                      selected={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select technologies..."
+                      disabled={isSubmitting}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Our Results Multi-Select */}
+            <FormField
+              control={form.control}
+              name="resultIds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Related Results</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={results.map((r) => ({
+                        value: r.id,
+                        label: r.title,
+                        image: r.icon || undefined,
+                      }))}
+                      selected={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select results..."
+                      disabled={isSubmitting}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             {/* Series Field */}
             <FormField
               control={form.control}
@@ -300,11 +419,11 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
               )}
             />
 
-             <FormField
+            <FormField
               control={form.control}
               name="schema"
               render={({ field }) => (
-                <FormItem> 
+                <FormItem>
                   <FormLabel>Schema Tag</FormLabel>
                   <FormControl>
                     <Textarea
@@ -318,7 +437,6 @@ export const UpdateServiceForm = ({ data }: UpdateServiceFormProps) => {
                 </FormItem>
               )}
             />
-
 
             {/* New Checkbox Field for Show in Menu */}
             <FormField
