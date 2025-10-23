@@ -10,7 +10,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import ImageUpload from "@/components/ui/image-upload";
+// import ImageUpload from "@/components/ui/image-upload";
+import MediaSelect from "@/components/media/MediaSelect";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
@@ -87,11 +89,11 @@ export const AddPortfolioForm = () => {
                 <FormItem>
                   <FormLabel>Image</FormLabel>
                   <FormControl>
-                    <ImageUpload
-                      value={field.value ? [field.value] : []}
-                      disabled={isSubmitting}
+                    <MediaSelect
+                      multiple={false}
+                      value={field.value || null}
                       onChange={(url) => field.onChange(url)}
-                      onRemove={() => field.onChange("")}
+                      resourceType="image"
                     />
                   </FormControl>
                   <FormMessage />

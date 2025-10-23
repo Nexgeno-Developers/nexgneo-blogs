@@ -10,7 +10,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import ImageUpload from "@/components/ui/image-upload";
+// import ImageUpload from "@/components/ui/image-upload";
+import MediaSelect from "@/components/media/MediaSelect";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Portfolio } from "@prisma/client";
@@ -81,11 +82,11 @@ export const UpdatePortfolioForm = ({ data }: UpdatePortfolioFormProps) => {
               <FormItem>
                 <FormLabel>Image</FormLabel>
                 <FormControl>
-                  <ImageUpload
-                    value={field.value ? [field.value] : []}
-                    disabled={isSubmitting}
+                  <MediaSelect
+                    multiple={false}
+                    value={field.value || null}
                     onChange={(url) => field.onChange(url)}
-                    onRemove={() => field.onChange("")}
+                    resourceType="image"
                   />
                 </FormControl>
                 <FormMessage />
