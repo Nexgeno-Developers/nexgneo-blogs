@@ -11,7 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
@@ -91,7 +90,9 @@ const formSchema = z.object({
     .array(cardSchema)
     .min(1, "Add at least one Why Choose card"),
   faqItems: z.array(faqSchema).min(1, "Add at least one FAQ"),
-  processItems: z.array(processCardSchema).min(1, "Add at least one process step"),
+  processItems: z
+    .array(processCardSchema)
+    .min(1, "Add at least one process step"),
   portfolioIds: z.array(z.string()).optional().default([]),
   clientIds: z.array(z.string()).optional().default([]),
   technologyIds: z.array(z.string()).optional().default([]),
@@ -446,11 +447,10 @@ export const AddServicesForm = ({
                               <FormItem>
                                 <FormLabel>Image</FormLabel>
                                 <FormControl>
-                                  <ImageUpload
-                                    value={field.value ? [field.value] : []}
-                                    disabled={isSubmitting}
-                                    onChange={(url) => field.onChange(url)}
-                                    onRemove={() => field.onChange("")}
+                                  <MediaSelect
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    resourceType="image"
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -509,7 +509,12 @@ export const AddServicesForm = ({
                     type="button"
                     variant="secondary"
                     onClick={() =>
-                      processArray.append({ image: "", numbers: "", title: "", desc: "" })
+                      processArray.append({
+                        image: "",
+                        numbers: "",
+                        title: "",
+                        desc: "",
+                      })
                     }
                     disabled={isSubmitting}
                     className="gap-2"
@@ -552,11 +557,10 @@ export const AddServicesForm = ({
                               <FormItem>
                                 <FormLabel>Image</FormLabel>
                                 <FormControl>
-                                  <ImageUpload
-                                    value={field.value ? [field.value] : []}
-                                    disabled={isSubmitting}
-                                    onChange={(url) => field.onChange(url)}
-                                    onRemove={() => field.onChange("")}
+                                  <MediaSelect
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    resourceType="image"
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -652,7 +656,9 @@ export const AddServicesForm = ({
                           variant="ghost"
                           size="icon"
                           onClick={() => faqArray.remove(index)}
-                          disabled={isSubmitting || faqArray.fields.length === 1}
+                          disabled={
+                            isSubmitting || faqArray.fields.length === 1
+                          }
                           title={
                             faqArray.fields.length === 1
                               ? "At least one FAQ required"
@@ -756,11 +762,10 @@ export const AddServicesForm = ({
                         <FormItem>
                           <FormLabel>SEO Image 1</FormLabel>
                           <FormControl>
-                            <ImageUpload
-                              value={field.value ? [field.value] : []}
-                              disabled={isSubmitting}
-                              onChange={(url) => field.onChange(url)}
-                              onRemove={() => field.onChange("")}
+                            <MediaSelect
+                              value={field.value}
+                              onChange={field.onChange}
+                              resourceType="image"
                             />
                           </FormControl>
                           <FormMessage />
@@ -794,12 +799,11 @@ export const AddServicesForm = ({
                         <FormItem>
                           <FormLabel>SEO Image 2</FormLabel>
                           <FormControl>
-                            <ImageUpload
-                              value={field.value ? [field.value] : []}
-                              disabled={isSubmitting}
-                              onChange={(url) => field.onChange(url)}
-                              onRemove={() => field.onChange("")}
-                            />
+                          <MediaSelect
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    resourceType="image"
+                                  />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

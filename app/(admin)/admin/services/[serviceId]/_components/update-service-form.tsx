@@ -10,7 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch"; // Import Switch
@@ -92,9 +91,6 @@ const formSchema = z.object({
   }),
   content: z.string().min(3, {
     message: "h1Title is required",
-  }),
-  whyChoose: z.string().min(3, {
-    message: "whyChoose is required",
   }),
   portfolioIds: z.array(z.string()).optional().default([]),
   clientIds: z.array(z.string()).optional().default([]),
@@ -286,12 +282,11 @@ export const UpdateServiceForm = ({
                         <FormItem>
                           <FormLabel>Hero Image</FormLabel>
                           <FormControl>
-                            <ImageUpload
-                              value={field.value ? [field.value] : []}
-                              disabled={isSubmitting}
-                              onChange={(url) => field.onChange(url)}
-                              onRemove={() => field.onChange("")}
-                            />
+                          <MediaSelect
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    resourceType="image"
+                                  />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -440,11 +435,10 @@ export const UpdateServiceForm = ({
                               <FormItem>
                                 <FormLabel>Image</FormLabel>
                                 <FormControl>
-                                  <ImageUpload
-                                    value={field.value ? [field.value] : []}
-                                    disabled={isSubmitting}
-                                    onChange={(url) => field.onChange(url)}
-                                    onRemove={() => field.onChange("")}
+                                  <MediaSelect
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    resourceType="image"
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -546,11 +540,10 @@ export const UpdateServiceForm = ({
                               <FormItem>
                                 <FormLabel>Image</FormLabel>
                                 <FormControl>
-                                  <ImageUpload
-                                    value={field.value ? [field.value] : []}
-                                    disabled={isSubmitting}
-                                    onChange={(url) => field.onChange(url)}
-                                    onRemove={() => field.onChange("")}
+                                  <MediaSelect
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    resourceType="image"
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -749,11 +742,10 @@ export const UpdateServiceForm = ({
                         <FormItem>
                           <FormLabel>SEO Image 1</FormLabel>
                           <FormControl>
-                            <ImageUpload
-                              value={field.value ? [field.value] : []}
-                              disabled={isSubmitting}
-                              onChange={(url) => field.onChange(url)}
-                              onRemove={() => field.onChange("")}
+                            <MediaSelect
+                              value={field.value}
+                              onChange={field.onChange}
+                              resourceType="image"
                             />
                           </FormControl>
                           <FormMessage />
@@ -787,11 +779,10 @@ export const UpdateServiceForm = ({
                         <FormItem>
                           <FormLabel>SEO Image 2</FormLabel>
                           <FormControl>
-                            <ImageUpload
-                              value={field.value ? [field.value] : []}
-                              disabled={isSubmitting}
-                              onChange={(url) => field.onChange(url)}
-                              onRemove={() => field.onChange("")}
+                            <MediaSelect
+                              value={field.value}
+                              onChange={field.onChange}
+                              resourceType="image"
                             />
                           </FormControl>
                           <FormMessage />
