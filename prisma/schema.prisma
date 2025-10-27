@@ -107,6 +107,17 @@ model Services {
   content   String
   series      Int?
   whyChoose String?
+  whyChooseItems Json?
+  // NEW (Process)
+  processItems   Json?     // [{ image, title, desc }, …]
+  faqItems       Json?     // [{ title, desc }, ...]
+  CTAname String?
+  CTAbuttonname String?
+  HeroButton String?
+  Seoimag1 String?
+  Seocontent1 String?
+  Seoimag2 String?
+  Seocontent2 String?
   showInMenu   Boolean?
   menuTitle String?
   schema String?
