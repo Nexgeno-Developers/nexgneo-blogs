@@ -97,6 +97,7 @@ model Leads {
 
 model Services {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  HeroButton String? 
   image     String
   altTag    String?
   title     String
@@ -113,7 +114,6 @@ model Services {
   faqItems       Json?     // [{ title, desc }, ...]
   CTAname String?
   CTAbuttonname String?
-  HeroButton String?
   Seoimag1 String?
   Seocontent1 String?
   Seoimag2 String?
