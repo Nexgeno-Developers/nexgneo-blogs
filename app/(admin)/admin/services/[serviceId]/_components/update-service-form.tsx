@@ -33,15 +33,35 @@ interface UpdateServiceFormProps {
   whyChooseItems?: any;
   processItems?: any;
 }
-const cardSchema = z.object({
+const whyChooseCardSchema = z.object({
   image: z.string().min(1, "Image is required"),
   title: z.string().min(2, "Title is required"),
+  desc: z.string().min(3, "Description is required"),
+});
+
+const processCardSchema = z.object({
+  image: z.string().min(1, "Image is required"),
+  title: z.string().min(2, "Title is required"),
+  numbers: z.string().min(1, "Step number is required"),
   desc: z.string().min(3, "Description is required"),
 });
 
 const faqSchema = z.object({
   title: z.string().min(2, "Title is required"),
   desc: z.string().min(3, "Description is required"),
+});
+// Services Manager schemas
+const svcItemSchema = z.object({
+  title: z.string().min(2, { message: "Title is required" }),
+  desc: z.string().min(3, { message: "Description is required" }),
+  icon: z.string().min(1, { message: "Icon is required" }),
+  buttonText: z.string().min(1, { message: "Button text is required" }),
+  buttonUrl: z.string().min(1, { message: "Button URL is required" }),
+});
+
+const svcCategorySchema = z.object({
+  categoryTitle: z.string().min(2, { message: "Category title is required" }),
+  items: z.array(svcItemSchema).min(1, { message: "Add at least one item" }),
 });
 const formSchema = z.object({
   image: z.string().min(1, {
@@ -68,12 +88,14 @@ const formSchema = z.object({
   // Why Choose
   whyChoose: z.string().min(3, { message: "whyChoose is required" }),
   whyChooseItems: z
-    .array(cardSchema)
+    .array(whyChooseCardSchema)
     .min(1, "Add at least one Why Choose card"),
   faqItems: z.array(faqSchema).min(1, "Add at least one FAQ"),
 
   // OUR PROCESS (only items)
-  processItems: z.array(cardSchema).min(1, "Add at least one process step"),
+  processItems: z
+    .array(processCardSchema)
+    .min(1, "Add at least one process step"),
   slug: z
     .string()
     .min(3, {
@@ -92,6 +114,10 @@ const formSchema = z.object({
   content: z.string().min(3, {
     message: "h1Title is required",
   }),
+  servicesManager: z
+    .array(svcCategorySchema)
+    .min(1, "Add at least one category")
+    .optional(),
   portfolioIds: z.array(z.string()).optional().default([]),
   clientIds: z.array(z.string()).optional().default([]),
   technologyIds: z.array(z.string()).optional().default([]),
@@ -132,6 +158,12 @@ export const UpdateServiceForm = ({
     (data as any)?.faqItems
   )
     ? (data as any).faqItems
+    : [];
+
+  const parsedServicesManager: any[] = Array.isArray(
+    (data as any)?.servicesManager
+  )
+    ? (data as any).servicesManager
     : [];
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -180,6 +212,23 @@ export const UpdateServiceForm = ({
       faqItems: parsedFaqItems.length
         ? parsedFaqItems
         : [{ title: "", desc: "" }],
+      servicesManager:
+        parsedServicesManager.length > 0
+          ? parsedServicesManager
+          : [
+              {
+                categoryTitle: "",
+                items: [
+                  {
+                    title: "",
+                    desc: "",
+                    icon: "",
+                    buttonText: "",
+                    buttonUrl: "",
+                  },
+                ],
+              },
+            ],
       showInMenu: data?.showInMenu ?? false, // Set default to false
     },
   });
@@ -282,11 +331,11 @@ export const UpdateServiceForm = ({
                         <FormItem>
                           <FormLabel>Hero Image</FormLabel>
                           <FormControl>
-                          <MediaSelect
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    resourceType="image"
-                                  />
+                            <MediaSelect
+                              value={field.value}
+                              onChange={field.onChange}
+                              resourceType="image"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -312,6 +361,253 @@ export const UpdateServiceForm = ({
                     />
                   </div>
                 </div>
+              </section>
+
+              {/* Services Manager (below Hero) */}
+              <section className="shadow-md p-8 pt-5 space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Services Manager</h3>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => {
+                      const curr = form.getValues("servicesManager") || [];
+                      form.setValue("servicesManager", [
+                        ...curr,
+                        {
+                          categoryTitle: "",
+                          items: [
+                            {
+                              title: "",
+                              desc: "",
+                              icon: "",
+                              buttonText: "",
+                              buttonUrl: "",
+                            },
+                          ],
+                        },
+                      ]);
+                    }}
+                    disabled={isSubmitting}
+                    className="gap-2"
+                  >
+                    <Plus className="h-4 w-4" /> Add Category
+                  </Button>
+                </div>
+
+                {(form.watch("servicesManager") || []).map((cat, cIdx) => (
+                  <div key={cIdx} className="border rounded-md">
+                    <div className="flex items-center justify-between p-4">
+                      <div className="text-base font-semibold">
+                        Category #{cIdx + 1}
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          const curr = [
+                            ...(form.getValues("servicesManager") || []),
+                          ];
+                          if (curr.length <= 1) return;
+                          curr.splice(cIdx, 1);
+                          form.setValue("servicesManager", curr);
+                        }}
+                        disabled={
+                          isSubmitting ||
+                          (form.watch("servicesManager") || []).length === 1
+                        }
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="grid gap-6 p-6">
+                      <FormField
+                        control={form.control}
+                        name={`servicesManager.${cIdx}.categoryTitle` as any}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Category Title</FormLabel>
+                            <FormControl>
+                              <Input
+                                disabled={isSubmitting}
+                                placeholder="e.g. Design & Web"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm font-medium">Items</div>
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          onClick={() => {
+                            const curr = [
+                              ...(form.getValues("servicesManager") || []),
+                            ];
+                            const cat = curr[cIdx];
+                            if (!cat) return;
+                            cat.items = [
+                              ...cat.items,
+                              {
+                                title: "",
+                                desc: "",
+                                icon: "",
+                                buttonText: "",
+                                buttonUrl: "",
+                              },
+                            ];
+                            curr[cIdx] = cat;
+                            form.setValue("servicesManager", curr);
+                          }}
+                          disabled={isSubmitting}
+                          className="gap-2"
+                        >
+                          <Plus className="h-4 w-4" /> Add Item
+                        </Button>
+                      </div>
+
+                      {(
+                        form.watch(`servicesManager.${cIdx}.items` as any) || []
+                      ).map((__unused: unknown, iIdx: number) => (
+                        <div key={iIdx} className="border rounded">
+                          <div className="flex items-center justify-between p-3">
+                            <div className="text-sm font-semibold">
+                              Item #{iIdx + 1}
+                            </div>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => {
+                                const curr = [
+                                  ...(form.getValues("servicesManager") || []),
+                                ];
+                                const cat = curr[cIdx];
+                                if (!cat) return;
+                                if (cat.items.length <= 1) return;
+                                cat.items.splice(iIdx, 1);
+                                curr[cIdx] = cat;
+                                form.setValue("servicesManager", curr);
+                              }}
+                              disabled={
+                                isSubmitting ||
+                                (
+                                  form.watch(
+                                    `servicesManager.${cIdx}.items` as any
+                                  ) || []
+                                ).length === 1
+                              }
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                          <div className="grid gap-4 p-4 md:grid-cols-2">
+                            <FormField
+                              control={form.control}
+                              name={
+                                `servicesManager.${cIdx}.items.${iIdx}.icon` as any
+                              }
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Icon</FormLabel>
+                                  <FormControl>
+                                    <MediaSelect
+                                      value={field.value}
+                                      onChange={field.onChange}
+                                      resourceType="image"
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name={
+                                `servicesManager.${cIdx}.items.${iIdx}.title` as any
+                              }
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Title</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      disabled={isSubmitting}
+                                      placeholder="Service title"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name={
+                                `servicesManager.${cIdx}.items.${iIdx}.desc` as any
+                              }
+                              render={({ field }) => (
+                                <FormItem className="md:col-span-2">
+                                  <FormLabel>Description</FormLabel>
+                                  <FormControl>
+                                    <Textarea
+                                      disabled={isSubmitting}
+                                      placeholder="Short description"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name={
+                                `servicesManager.${cIdx}.items.${iIdx}.buttonText` as any
+                              }
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Button Text</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      disabled={isSubmitting}
+                                      placeholder="e.g. Learn More"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name={
+                                `servicesManager.${cIdx}.items.${iIdx}.buttonUrl` as any
+                              }
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Button URL</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      disabled={isSubmitting}
+                                      placeholder="/services/..."
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </section>
 
               <section className="space-y-4">
@@ -497,7 +793,12 @@ export const UpdateServiceForm = ({
                     type="button"
                     variant="secondary"
                     onClick={() =>
-                      procArray.append({ image: "", title: "", desc: "" })
+                      procArray.append({
+                        image: "",
+                        title: "",
+                        desc: "",
+                        numbers: "",
+                      })
                     }
                     disabled={isSubmitting}
                     className="gap-2"

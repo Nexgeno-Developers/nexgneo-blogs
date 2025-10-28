@@ -121,6 +121,7 @@ model Services {
   showInMenu   Boolean?
   menuTitle String?
   schema String?
+  servicesManager Json? // [{ categoryTitle, items: [{ title, desc, icon, buttonText, buttonUrl }] }]
   portfolioIds String[] @default([]) @db.ObjectId
   clientIds String[] @default([]) @db.ObjectId      // NEW
   technologyIds String[] @default([]) @db.ObjectId  // NEW
