@@ -3,6 +3,7 @@ import { v2 as cloudinary, ConfigOptions, UploadApiOptions } from "cloudinary";
 const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
 const apiKey = process.env.CLOUDINARY_API_KEY;
 const apiSecret = process.env.CLOUDINARY_API_SECRET;
+const FOLDER = process.env.CLOUDINARY_FOLDER || "media_uploads";
 
 if (!cloudName || !apiKey || !apiSecret) {
   // Do not throw at import time to avoid breaking build; API routes can validate
@@ -35,8 +36,11 @@ export type MediaResource = {
   filename?: string;
 };
 
+// lib/cloudinary.ts
 export const mapResource = (r: any): MediaResource => {
   const isVideo = r.resource_type === "video";
+  const isSvg = r.resource_type === "image" && (r.format === "svg" || /\.svg$/i.test(r.public_id));
+
   const thumb = isVideo
     ? cloudinary.url(r.public_id + ".jpg", {
         resource_type: "video",
@@ -44,6 +48,8 @@ export const mapResource = (r: any): MediaResource => {
       })
     : cloudinary.url(r.public_id, {
         resource_type: "image",
+        // For SVGs, rasterize to PNG so we can crop/fill
+        format: isSvg ? "png" : undefined,
         transformation: [{ width: 300, height: 300, crop: "fill" }],
       });
 
@@ -66,6 +72,45 @@ export const mapResource = (r: any): MediaResource => {
   };
 };
 
+// export const listResources = async ({
+//   nextCursor,
+//   maxResults = 30,
+//   resourceType = "all",
+//   prefix,
+//   expression,
+// }: {
+//   nextCursor?: string;
+//   maxResults?: number;
+//   resourceType?: "image" | "video" | "all";
+//   prefix?: string;
+//   expression?: string; // search expression
+// }) => {
+//   if (expression) {
+//     const res = await cloudinary.search
+//       .expression(expression)
+//       .max_results(maxResults)
+//       .next_cursor(nextCursor)
+//       .execute();
+//     return {
+//       resources: res.resources.map(mapResource),
+//       nextCursor: res.next_cursor as string | undefined,
+//     };
+//   }
+
+//   const type = resourceType === "all" ? undefined : resourceType;
+//   const res = await cloudinary.api.resources({
+//     type: "upload",
+//     resource_type: (type as any) || undefined,
+//     max_results: maxResults,
+//     next_cursor: nextCursor,
+//     prefix,
+//   } as any);
+//   return {
+//     resources: res.resources.map(mapResource),
+//     nextCursor: res.next_cursor as string | undefined,
+//   };
+// };
+
 export const listResources = async ({
   nextCursor,
   maxResults = 30,
@@ -77,34 +122,32 @@ export const listResources = async ({
   maxResults?: number;
   resourceType?: "image" | "video" | "all";
   prefix?: string;
-  expression?: string; // search expression
+  expression?: string;
 }) => {
-  if (expression) {
-    const res = await cloudinary.search
-      .expression(expression)
-      .max_results(maxResults)
-      .next_cursor(nextCursor)
-      .execute();
-    return {
-      resources: res.resources.map(mapResource),
-      nextCursor: res.next_cursor as string | undefined,
-    };
+  // Build a folder-scoped search expression
+  let searchExpr = `folder:${FOLDER}`;
+  if (resourceType === "image") searchExpr += ` AND resource_type:image`;
+  else if (resourceType === "video") searchExpr += ` AND resource_type:video`;
+  else
+    searchExpr += ` AND (resource_type:image OR resource_type:video OR resource_type:raw)`;
+
+  if (expression && expression.trim()) {
+    const q = expression.trim();
+    searchExpr += ` AND (filename:*${q}* OR public_id:*${q}*)`;
   }
 
-  const type = resourceType === "all" ? undefined : resourceType;
-  const res = await cloudinary.api.resources({
-    type: "upload",
-    resource_type: (type as any) || undefined,
-    max_results: maxResults,
-    next_cursor: nextCursor,
-    prefix,
-  } as any);
+  const res = await cloudinary.search
+    .expression(searchExpr)
+    .sort_by("created_at", "desc")
+    .max_results(maxResults)
+    .next_cursor(nextCursor)
+    .execute();
+
   return {
     resources: res.resources.map(mapResource),
     nextCursor: res.next_cursor as string | undefined,
   };
 };
-
 export const deleteResource = async (
   publicId: string,
   resourceType: "image" | "video" | "raw" = "image"

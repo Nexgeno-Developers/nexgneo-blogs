@@ -234,6 +234,8 @@ const MediaManager = () => {
         </div>
       )}
 
+      {console.log("Items" , items)}
+
       <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {items.map((it) => (
           <MediaCard

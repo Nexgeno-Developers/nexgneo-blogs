@@ -94,7 +94,7 @@ const MediaSelect = ({
   const uploadFiles = async (files: FileList) => {
     setUploading(true);
     setUploadProgress(0);
-    
+
     try {
       const signRes = await fetch("/api/media/sign-upload", {
         method: "POST",
@@ -136,10 +136,10 @@ const MediaSelect = ({
           xhr.send(formDatas[i]);
         });
       }
-      
+
       toast.success("Uploaded successfully");
       await fetchItems(); // Refresh the list
-      
+
       if (inputRef.current) inputRef.current.value = "";
     } catch (error) {
       console.error("Upload error:", error);
@@ -191,21 +191,16 @@ const MediaSelect = ({
               <Loader2 className="h-4 w-4 animate-spin" />
               Loading media...
             </span>
-          ) : !multiple &&
-            typeof value === "string" &&
-            value &&
-            selectedPreview ? (
+          ) : !multiple && typeof value === "string" && value ? (
             <span className="flex items-center gap-2">
               <Image
-                src={selectedPreview.thumbnailUrl}
+                src={value}
                 alt="selected"
                 width={24}
                 height={24}
                 className="rounded-sm object-cover"
               />
-              <span className="truncate max-w-[200px]">
-                {selectedPreview.publicId}
-              </span>
+              <span className="truncate max-w-[200px]">Selected</span>
             </span>
           ) : (
             <span className="flex items-center gap-2">
@@ -223,7 +218,7 @@ const MediaSelect = ({
           accept={getAcceptType()}
           onChange={handleFileChange}
         />
-        
+
         <Button
           type="button"
           variant="outline"
@@ -279,7 +274,7 @@ const MediaSelect = ({
           <DialogHeader>
             <DialogTitle>Select Media</DialogTitle>
           </DialogHeader>
-          
+
           <div className="flex gap-3 items-center">
             <div className="flex items-center gap-2 border rounded-md px-3 py-2 flex-1">
               <Search className="h-4 w-4 text-muted-foreground" />
