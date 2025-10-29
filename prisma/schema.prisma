@@ -244,13 +244,17 @@ model Result {
   icon         String   // URL from Cloudinary via MediaSelect
   iconAltTag   String?
   title        String   // e.g., "500+"
-  desc         String   // Description text
+  description  String?  // Short intro text above title
+  desc         String   // Main description text
   image        String   // Main image URL from Cloudinary via MediaSelect
   imageAltTag  String?
   buttonText   String   // Button text (e.g., "View Our Work")
   slug         String?  @unique // For SEO
   metaTitle    String?
   metaDesc     String?
+  highlight    String?  // Optional highlighted line below desc
+  stats        Json?    // { keywords: string, impressions: string, visitors: string }
+  duration     String?  // e.g., "in 3 months"
   series       Int?     // For ordering
   showOnHome   Boolean  @default(false) // Toggle for homepage visibility
   createdAt    DateTime @default(now())

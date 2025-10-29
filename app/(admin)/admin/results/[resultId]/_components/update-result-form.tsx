@@ -31,6 +31,7 @@ const formSchema = z.object({
   title: z.string().min(3, {
     message: "Title is required",
   }),
+  description: z.string().optional(),
   desc: z.string().min(3, {
     message: "Description is required",
   }),
@@ -44,6 +45,15 @@ const formSchema = z.object({
   slug: z.string().optional(),
   metaTitle: z.string().optional(),
   metaDesc: z.string().optional(),
+  highlight: z.string().optional(),
+  stats: z
+    .object({
+      keywords: z.string().optional(),
+      impressions: z.string().optional(),
+      visitors: z.string().optional(),
+    })
+    .optional(),
+  duration: z.string().optional(),
   series: z.union([z.number().min(1), z.null()]).optional(),
   showOnHome: z.boolean().default(false),
 });
@@ -61,6 +71,7 @@ export const UpdateResultForm = ({ data }: UpdateResultFormProps) => {
       icon: data?.icon || "",
       iconAltTag: data?.iconAltTag || "",
       title: data?.title || "",
+      description: (data as any)?.description || "",
       desc: data?.desc || "",
       image: data?.image || "",
       imageAltTag: data?.imageAltTag || "",
@@ -68,6 +79,13 @@ export const UpdateResultForm = ({ data }: UpdateResultFormProps) => {
       slug: data?.slug || "",
       metaTitle: data?.metaTitle || "",
       metaDesc: data?.metaDesc || "",
+      highlight: (data as any)?.highlight || "",
+      stats: (data as any)?.stats || {
+        keywords: "",
+        impressions: "",
+        visitors: "",
+      },
+      duration: (data as any)?.duration || "",
       series: data?.series ?? null,
       showOnHome: data?.showOnHome ?? false,
     },
@@ -147,6 +165,23 @@ export const UpdateResultForm = ({ data }: UpdateResultFormProps) => {
           />
           <FormField
             control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Intro Description (optional)</FormLabel>
+                <FormControl>
+                  <Textarea
+                    disabled={isSubmitting}
+                    placeholder="Short intro above title"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="desc"
             render={({ field }) => (
               <FormItem>
@@ -155,6 +190,94 @@ export const UpdateResultForm = ({ data }: UpdateResultFormProps) => {
                   <Textarea
                     disabled={isSubmitting}
                     placeholder="Description text"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="highlight"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Highlight (optional)</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isSubmitting}
+                    placeholder="A highlighted line below description"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* Stats Group */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <FormField
+              control={form.control}
+              name="stats.keywords"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Keywords (optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="e.g., 1,200+"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="stats.impressions"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Impressions (optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="e.g., 1M+"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="stats.visitors"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Visitors (optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="e.g., 250k+"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="duration"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Duration (optional)</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isSubmitting}
+                    placeholder="e.g., in 3 months"
                     {...field}
                   />
                 </FormControl>
