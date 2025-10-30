@@ -30,6 +30,7 @@ interface UpdateServiceFormProps {
   clients: any[];
   technologies: any[];
   results: any[];
+  testimonials?: any[];
   whyChooseItems?: any;
   processItems?: any;
 }
@@ -122,6 +123,7 @@ const formSchema = z.object({
   clientIds: z.array(z.string()).optional().default([]),
   technologyIds: z.array(z.string()).optional().default([]),
   resultIds: z.array(z.string()).optional().default([]),
+  testimonialIds: z.array(z.string()).optional().default([]),
   series: z.union([z.number().min(1), z.null()]).optional(),
   showInMenu: z.boolean().default(false),
 });
@@ -132,6 +134,7 @@ export const UpdateServiceForm = ({
   clients,
   technologies,
   results,
+  testimonials = [],
 }: UpdateServiceFormProps) => {
   const router = useRouter();
   // Parse existing Why Choose items (support legacy JSON-in-string if needed)
@@ -191,6 +194,7 @@ export const UpdateServiceForm = ({
       clientIds: (data as any)?.clientIds || [],
       technologyIds: (data as any)?.technologyIds || [],
       resultIds: (data as any)?.resultIds || [],
+      testimonialIds: (data as any)?.testimonialIds || [],
       // Why Choose
       whyChoose:
         data?.whyChoose &&
@@ -1203,6 +1207,31 @@ export const UpdateServiceForm = ({
                         selected={field.value}
                         onChange={field.onChange}
                         placeholder="Select results..."
+                        disabled={isSubmitting}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Related Testimonials Multi-Select */}
+              <FormField
+                control={form.control}
+                name="testimonialIds"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Related Testimonials</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        options={(testimonials || []).map((t: any) => ({
+                          value: t.id,
+                          label: t.name,
+                          image: t.avatar || undefined,
+                        }))}
+                        selected={field.value}
+                        onChange={field.onChange}
+                        placeholder="Select testimonials..."
                         disabled={isSubmitting}
                       />
                     </FormControl>

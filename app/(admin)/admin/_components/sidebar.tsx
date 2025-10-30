@@ -134,6 +134,12 @@ const Sidebar = ({ name, image }: SidebarProps) => {
           path: "/admin/results",
           icon: <Award />,
         },
+        {
+          id: 13,
+          title: "Testimonials",
+          path: "/admin/testimonials",
+          icon: <Award />, // reuse icon; can be changed later
+        },
       ],
     },
   ];

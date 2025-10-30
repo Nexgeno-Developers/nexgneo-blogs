@@ -126,6 +126,7 @@ model Services {
   clientIds String[] @default([]) @db.ObjectId      // NEW
   technologyIds String[] @default([]) @db.ObjectId  // NEW
   resultIds String[] @default([]) @db.ObjectId      // NEW
+  testimonialIds String[] @default([]) @db.ObjectId  // NEW
   
 
   createdAt DateTime @default(now())
@@ -259,4 +260,19 @@ model Result {
   showOnHome   Boolean  @default(false) // Toggle for homepage visibility
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  comment   String
+  avatar    String?
+  rating    Float?
+  platform  String?
+  role      String?
+  company   String?
+  series    Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -114,6 +114,7 @@ const formSchema = z.object({
   clientIds: z.array(z.string()).optional().default([]),
   technologyIds: z.array(z.string()).optional().default([]),
   resultIds: z.array(z.string()).optional().default([]),
+  testimonialIds: z.array(z.string()).optional().default([]),
   series: z.union([z.number().min(1), z.null()]).optional(),
   showInMenu: z.boolean().default(false),
 });
@@ -123,6 +124,7 @@ interface AddServicesFormProps {
   clients: any[];
   technologies: any[];
   results: any[];
+  testimonials: any[];
 }
 
 export const AddServicesForm = ({
@@ -130,6 +132,7 @@ export const AddServicesForm = ({
   clients,
   technologies,
   results,
+  testimonials,
 }: AddServicesFormProps) => {
   const router = useRouter();
 
@@ -175,6 +178,7 @@ export const AddServicesForm = ({
       clientIds: [],
       technologyIds: [],
       resultIds: [],
+      testimonialIds: [],
       series: null,
       showInMenu: false,
     },
@@ -1141,6 +1145,31 @@ export const AddServicesForm = ({
                         selected={field.value}
                         onChange={field.onChange}
                         placeholder="Select clients..."
+                        disabled={isSubmitting}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Related Testimonials */}
+              <FormField
+                control={form.control}
+                name="testimonialIds"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Related Testimonials</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        options={testimonials.map((t) => ({
+                          value: t.id,
+                          label: t.name,
+                          image: t.avatar || undefined,
+                        }))}
+                        selected={field.value}
+                        onChange={field.onChange}
+                        placeholder="Select testimonials..."
                         disabled={isSubmitting}
                       />
                     </FormControl>
