@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch"; // Import Switch
-import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select";
+import { Switch } from "@/components/ui/switch";
+import { MultiSelect } from "@/components/ui/multi-select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Services, Portfolio } from "@prisma/client";
 import axios from "axios";
@@ -34,6 +34,7 @@ interface UpdateServiceFormProps {
   whyChooseItems?: any;
   processItems?: any;
 }
+
 const whyChooseCardSchema = z.object({
   image: z.string().min(1, "Image is required"),
   title: z.string().min(2, "Title is required"),
@@ -51,6 +52,7 @@ const faqSchema = z.object({
   title: z.string().min(2, "Title is required"),
   desc: z.string().min(3, "Description is required"),
 });
+
 // Services Manager schemas
 const svcItemSchema = z.object({
   title: z.string().optional(),
@@ -62,9 +64,9 @@ const svcItemSchema = z.object({
 
 const svcCategorySchema = z.object({
   categoryTitle: z.string().optional(),
-  // we still want an array, but items inside can be partial
   items: z.array(svcItemSchema).optional(),
 });
+
 const formSchema = z.object({
   image: z.string().min(1, {
     message: "Image is required",
@@ -93,8 +95,7 @@ const formSchema = z.object({
     .array(whyChooseCardSchema)
     .min(1, "Add at least one Why Choose card"),
   faqItems: z.array(faqSchema).min(1, "Add at least one FAQ"),
-
-  // OUR PROCESS (only items)
+  // OUR PROCESS
   processItems: z
     .array(processCardSchema)
     .min(1, "Add at least one process step"),
@@ -135,7 +136,8 @@ export const UpdateServiceForm = ({
   testimonials = [],
 }: UpdateServiceFormProps) => {
   const router = useRouter();
-  // Parse existing Why Choose items (support legacy JSON-in-string if needed)
+
+  // Parse existing Why Choose items
   const parsedWhyChooseItems: { image: string; title: string; desc: string }[] =
     (() => {
       if (Array.isArray((data as any)?.whyChooseItems))
@@ -148,7 +150,12 @@ export const UpdateServiceForm = ({
     })();
 
   // Parse existing Process items
-  const parsedProcessItems: { image: string; title: string; desc: string }[] =
+  const parsedProcessItems: {
+    image: string;
+    title: string;
+    desc: string;
+    numbers?: string;
+  }[] =
     (() => {
       if (Array.isArray((data as any)?.processItems))
         return (data as any).processItems;
@@ -204,48 +211,66 @@ export const UpdateServiceForm = ({
         parsedWhyChooseItems.length > 0
           ? parsedWhyChooseItems
           : [{ image: "", title: "", desc: "" }],
-
-      // OUR PROCESS (only items)
+      // OUR PROCESS
       processItems:
         parsedProcessItems.length > 0
           ? parsedProcessItems
           : [{ image: "", numbers: "", title: "", desc: "" }],
-
       faqItems: parsedFaqItems.length
         ? parsedFaqItems
         : [{ title: "", desc: "" }],
+      // ✅ normalize servicesManager here
       servicesManager:
-  parsedServicesManager.length > 0
-    ? parsedServicesManager
-    : [
-        {
-          categoryTitle: "",
-          items: [
-            {
-              title: "",
-              desc: "",
-              icon: "",
-              buttonText: "",
-              buttonUrl: "",
-            },
-          ],
-        },
-      ],
-
-      showInMenu: data?.showInMenu ?? false, // Set default to false
+        parsedServicesManager.length > 0
+          ? parsedServicesManager.map((cat: any) => ({
+              categoryTitle: cat.categoryTitle ?? "",
+              items: Array.isArray(cat.items)
+                ? cat.items
+                : [
+                    {
+                      title: "",
+                      desc: "",
+                      icon: "",
+                      buttonText: "",
+                      buttonUrl: "",
+                    },
+                  ],
+            }))
+          : [
+              {
+                categoryTitle: "",
+                items: [
+                  {
+                    title: "",
+                    desc: "",
+                    icon: "",
+                    buttonText: "",
+                    buttonUrl: "",
+                  },
+                ],
+              },
+            ],
+      showInMenu: data?.showInMenu ?? false,
     },
   });
 
   const { isSubmitting } = form.formState;
+
   const items = useFieldArray({
     control: form.control,
     name: "whyChooseItems",
   });
+
   const procArray = useFieldArray({
     control: form.control,
     name: "processItems",
   });
-  const faqArray = useFieldArray({ control: form.control, name: "faqItems" });
+
+  const faqArray = useFieldArray({
+    control: form.control,
+    name: "faqItems",
+  });
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/services/${data?.id}`, values);
@@ -367,19 +392,97 @@ export const UpdateServiceForm = ({
               </section>
 
               {/* Services Manager (below Hero) */}
-              <section className="shadow-md p-8 pt-5 space-y-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">Services Manager</h3>
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => {
-                      const curr = form.getValues("servicesManager") || [];
-                      form.setValue("servicesManager", [
-                        ...curr,
-                        {
-                          categoryTitle: "",
-                          items: [
+             <section className="shadow-md p-8 pt-5 space-y-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Services Manager</h3>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => {
+                    const curr = form.getValues("servicesManager") || [];
+                    form.setValue("servicesManager", [
+                      ...curr,
+                      {
+                        categoryTitle: "",
+                        items: [
+                          {
+                            title: "",
+                            desc: "",
+                            icon: "",
+                            buttonText: "",
+                            buttonUrl: "",
+                          },
+                        ],
+                      },
+                    ]);
+                  }}
+                  disabled={isSubmitting}
+                  className="gap-2"
+                >
+                  <Plus className="h-4 w-4" /> Add Category
+                </Button>
+              </div>
+
+              {(form.watch("servicesManager") || []).map((cat, cIdx) => (
+                <div key={cIdx} className="border rounded-md">
+                  <div className="flex items-center justify-between p-4">
+                    <div className="text-base font-semibold">
+                      Category #{cIdx + 1}
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        const curr = [
+                          ...(form.getValues("servicesManager") || []),
+                        ];
+                        if (curr.length <= 1) return;
+                        curr.splice(cIdx, 1);
+                        form.setValue("servicesManager", curr);
+                      }}
+                      disabled={
+                        isSubmitting ||
+                        (form.watch("servicesManager") || []).length === 1
+                      }
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+
+                  <div className="grid gap-6 p-6">
+                    <FormField
+                      control={form.control}
+                      name={`servicesManager.${cIdx}.categoryTitle` as any}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Category Title</FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={isSubmitting}
+                              placeholder="e.g. Design & Web"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm font-medium">Items</div>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => {
+                          const curr = [
+                            ...(form.getValues("servicesManager") || []),
+                          ];
+                          const cat = curr[cIdx];
+                          if (!cat) return;
+                          // ✅ FIXED HERE
+                          cat.items = [
+                            ...(cat.items ?? []),
                             {
                               title: "",
                               desc: "",
@@ -387,231 +490,160 @@ export const UpdateServiceForm = ({
                               buttonText: "",
                               buttonUrl: "",
                             },
-                          ],
-                        },
-                      ]);
-                    }}
-                    disabled={isSubmitting}
-                    className="gap-2"
-                  >
-                    <Plus className="h-4 w-4" /> Add Category
-                  </Button>
-                </div>
-
-                {(form.watch("servicesManager") || []).map((cat, cIdx) => (
-                  <div key={cIdx} className="border rounded-md">
-                    <div className="flex items-center justify-between p-4">
-                      <div className="text-base font-semibold">
-                        Category #{cIdx + 1}
-                      </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          const curr = [
-                            ...(form.getValues("servicesManager") || []),
                           ];
-                          if (curr.length <= 1) return;
-                          curr.splice(cIdx, 1);
+                          curr[cIdx] = cat;
                           form.setValue("servicesManager", curr);
                         }}
-                        disabled={
-                          isSubmitting ||
-                          (form.watch("servicesManager") || []).length === 1
-                        }
+                        disabled={isSubmitting}
+                        className="gap-2"
                       >
-                        <X className="h-4 w-4" />
+                        <Plus className="h-4 w-4" /> Add Item
                       </Button>
                     </div>
-                    <div className="grid gap-6 p-6">
-                      <FormField
-                        control={form.control}
-                        name={`servicesManager.${cIdx}.categoryTitle` as any}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Category Title</FormLabel>
-                            <FormControl>
-                              <Input
-                                disabled={isSubmitting}
-                                placeholder="e.g. Design & Web"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
 
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm font-medium">Items</div>
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          onClick={() => {
-                            const curr = [
-                              ...(form.getValues("servicesManager") || []),
-                            ];
-                            const cat = curr[cIdx];
-                            if (!cat) return;
-                            cat.items = [
-                              ...cat.items,
-                              {
-                                title: "",
-                                desc: "",
-                                icon: "",
-                                buttonText: "",
-                                buttonUrl: "",
-                              },
-                            ];
-                            curr[cIdx] = cat;
-                            form.setValue("servicesManager", curr);
-                          }}
-                          disabled={isSubmitting}
-                          className="gap-2"
-                        >
-                          <Plus className="h-4 w-4" /> Add Item
-                        </Button>
-                      </div>
-
-                      {(
-                        form.watch(`servicesManager.${cIdx}.items` as any) || []
-                      ).map((__unused: unknown, iIdx: number) => (
-                        <div key={iIdx} className="border rounded">
-                          <div className="flex items-center justify-between p-3">
-                            <div className="text-sm font-semibold">
-                              Item #{iIdx + 1}
-                            </div>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => {
-                                const curr = [
-                                  ...(form.getValues("servicesManager") || []),
-                                ];
-                                const cat = curr[cIdx];
-                                if (!cat) return;
-                                if (cat.items.length <= 1) return;
-                                cat.items.splice(iIdx, 1);
-                                curr[cIdx] = cat;
-                                form.setValue("servicesManager", curr);
-                              }}
-                              disabled={
-                                isSubmitting ||
-                                (
-                                  form.watch(
-                                    `servicesManager.${cIdx}.items` as any
-                                  ) || []
-                                ).length === 1
-                              }
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
+                    {(
+                      form.watch(`servicesManager.${cIdx}.items` as any) || []
+                    ).map((__unused: unknown, iIdx: number) => (
+                      <div key={iIdx} className="border rounded">
+                        <div className="flex items-center justify-between p-3">
+                          <div className="text-sm font-semibold">
+                            Item #{iIdx + 1}
                           </div>
-                          <div className="grid gap-4 p-4 md:grid-cols-2">
-                            <FormField
-                              control={form.control}
-                              name={
-                                `servicesManager.${cIdx}.items.${iIdx}.icon` as any
-                              }
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Icon</FormLabel>
-                                  <FormControl>
-                                    <MediaSelect
-                                      value={field.value}
-                                      onChange={field.onChange}
-                                      resourceType="image"
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name={
-                                `servicesManager.${cIdx}.items.${iIdx}.title` as any
-                              }
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Title</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      disabled={isSubmitting}
-                                      placeholder="Service title"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name={
-                                `servicesManager.${cIdx}.items.${iIdx}.desc` as any
-                              }
-                              render={({ field }) => (
-                                <FormItem className="md:col-span-2">
-                                  <FormLabel>Description</FormLabel>
-                                  <FormControl>
-                                    <Textarea
-                                      disabled={isSubmitting}
-                                      placeholder="Short description"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name={
-                                `servicesManager.${cIdx}.items.${iIdx}.buttonText` as any
-                              }
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Button Text</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      disabled={isSubmitting}
-                                      placeholder="e.g. Learn More"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name={
-                                `servicesManager.${cIdx}.items.${iIdx}.buttonUrl` as any
-                              }
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Button URL</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      disabled={isSubmitting}
-                                      placeholder="/services/..."
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => {
+                              const curr = [
+                                ...(form.getValues("servicesManager") || []),
+                              ];
+                              const cat = curr[cIdx];
+                              if (!cat) return;
+                              if ((cat.items ?? []).length <= 1) return;
+                              cat.items!.splice(iIdx, 1);
+                              curr[cIdx] = cat;
+                              form.setValue("servicesManager", curr);
+                            }}
+                            disabled={
+                              isSubmitting ||
+                              (
+                                form.watch(
+                                  `servicesManager.${cIdx}.items` as any
+                                ) || []
+                              ).length === 1
+                            }
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
                         </div>
-                      ))}
-                    </div>
+
+                        <div className="grid gap-4 p-4 md:grid-cols-2">
+                          <FormField
+                            control={form.control}
+                            name={
+                              `servicesManager.${cIdx}.items.${iIdx}.icon` as any
+                            }
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Icon</FormLabel>
+                                <FormControl>
+                                  <MediaSelect
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    resourceType="image"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name={
+                              `servicesManager.${cIdx}.items.${iIdx}.title` as any
+                            }
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Title</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    disabled={isSubmitting}
+                                    placeholder="Service title"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name={
+                              `servicesManager.${cIdx}.items.${iIdx}.desc` as any
+                            }
+                            render={({ field }) => (
+                              <FormItem className="md:col-span-2">
+                                <FormLabel>Description</FormLabel>
+                                <FormControl>
+                                  <Textarea
+                                    disabled={isSubmitting}
+                                    placeholder="Short description"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name={
+                              `servicesManager.${cIdx}.items.${iIdx}.buttonText` as any
+                            }
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Button Text</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    disabled={isSubmitting}
+                                    placeholder="e.g. Learn More"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name={
+                              `servicesManager.${cIdx}.items.${iIdx}.buttonUrl` as any
+                            }
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Button URL</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    disabled={isSubmitting}
+                                    placeholder="/services/..."
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </section>
+                </div>
+              ))}
+            </section>
 
               <section className="space-y-4">
                 <h2 className="text-xl font-semibold">SEO Settings</h2>
