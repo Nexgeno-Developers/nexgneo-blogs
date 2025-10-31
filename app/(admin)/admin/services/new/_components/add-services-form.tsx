@@ -52,10 +52,9 @@ const svcItemSchema = z.object({
   buttonUrl: z.string().optional(),
 });
 
-
 const svcCategorySchema = z.object({
   categoryTitle: z.string().optional(),
-  // we still want an array, but items inside can be partial
+  // items is optional in schema, but we will normalize it in UI
   items: z.array(svcItemSchema).optional(),
 });
 
@@ -160,6 +159,7 @@ export const AddServicesForm = ({
       whyChooseItems: [{ image: "", title: "", desc: "" }],
       processItems: [{ image: "", numbers: "", title: "", desc: "" }],
       faqItems: [{ title: "", desc: "" }],
+      // ✅ always start with items array so UI logic is simpler
       servicesManager: [
         {
           categoryTitle: "",
@@ -201,15 +201,22 @@ export const AddServicesForm = ({
     name: "faqItems",
   });
 
-  // Services Manager helpers (manual updates for nested arrays)
+  // ===== Services Manager helpers =====
   const addCategory = () => {
     const curr = form.getValues("servicesManager") || [];
     form.setValue("servicesManager", [
       ...curr,
       {
         categoryTitle: "",
+        // ✅ ensure items is an array
         items: [
-          { title: "", desc: "", icon: "", buttonText: "", buttonUrl: "" },
+          {
+            title: "",
+            desc: "",
+            icon: "",
+            buttonText: "",
+            buttonUrl: "",
+          },
         ],
       },
     ]);
@@ -226,10 +233,21 @@ export const AddServicesForm = ({
     const curr = [...(form.getValues("servicesManager") || [])];
     const cat = curr[catIdx];
     if (!cat) return;
+
+    // ✅ normalize items in case it's undefined
+    const existingItems = Array.isArray(cat.items) ? cat.items : [];
+
     cat.items = [
-      ...cat.items,
-      { title: "", desc: "", icon: "", buttonText: "", buttonUrl: "" },
+      ...existingItems,
+      {
+        title: "",
+        desc: "",
+        icon: "",
+        buttonText: "",
+        buttonUrl: "",
+      },
     ];
+
     curr[catIdx] = cat;
     form.setValue("servicesManager", curr);
   };
@@ -238,8 +256,12 @@ export const AddServicesForm = ({
     const curr = [...(form.getValues("servicesManager") || [])];
     const cat = curr[catIdx];
     if (!cat) return;
-    if (cat.items.length <= 1) return;
-    cat.items.splice(itemIdx, 1);
+
+    const existingItems = Array.isArray(cat.items) ? cat.items : [];
+    if (existingItems.length <= 1) return;
+
+    existingItems.splice(itemIdx, 1);
+    cat.items = existingItems;
     curr[catIdx] = cat;
     form.setValue("servicesManager", curr);
   };
@@ -365,7 +387,7 @@ export const AddServicesForm = ({
                 </div>
               </section>
 
-              {/* Services Manager (below Hero) */}
+              {/* Services Manager */}
               <section className="shadow-md p-8 pt-5 space-y-6">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold">Services Manager</h3>
@@ -399,6 +421,7 @@ export const AddServicesForm = ({
                         <X className="h-4 w-4" />
                       </Button>
                     </div>
+
                     <div className="grid gap-6 p-6">
                       <FormField
                         control={form.control}
@@ -456,6 +479,7 @@ export const AddServicesForm = ({
                               <X className="h-4 w-4" />
                             </Button>
                           </div>
+
                           <div className="grid gap-4 p-4 md:grid-cols-2">
                             <FormField
                               control={form.control}
@@ -476,6 +500,7 @@ export const AddServicesForm = ({
                                 </FormItem>
                               )}
                             />
+
                             <FormField
                               control={form.control}
                               name={
@@ -495,6 +520,7 @@ export const AddServicesForm = ({
                                 </FormItem>
                               )}
                             />
+
                             <FormField
                               control={form.control}
                               name={
@@ -514,6 +540,7 @@ export const AddServicesForm = ({
                                 </FormItem>
                               )}
                             />
+
                             <FormField
                               control={form.control}
                               name={
@@ -533,6 +560,7 @@ export const AddServicesForm = ({
                                 </FormItem>
                               )}
                             />
+
                             <FormField
                               control={form.control}
                               name={
@@ -654,7 +682,7 @@ export const AddServicesForm = ({
                 )}
               />
 
-              {/* Why Choose Section */}
+              {/* Why Choose Content */}
               <FormField
                 control={form.control}
                 name="whyChoose"
@@ -774,11 +802,11 @@ export const AddServicesForm = ({
                 </div>
               </section>
 
-              {/* Our Process Section */}
+              {/* Our Process */}
               <section className="shadow-md p-8 pt-5 space-y-8">
                 <div className="flex items-center justify-between mt-2">
                   <h3 className="text-lg font-semibold">Our Process</h3>
-                  <Button
+                <Button
                     type="button"
                     variant="secondary"
                     onClick={() =>
