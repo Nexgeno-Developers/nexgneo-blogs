@@ -45,16 +45,18 @@ const faqSchema = z.object({
 
 // Services Manager schemas
 const svcItemSchema = z.object({
-  title: z.string().min(2, { message: "Title is required" }),
-  desc: z.string().min(3, { message: "Description is required" }),
-  icon: z.string().min(1, { message: "Icon is required" }),
-  buttonText: z.string().min(1, { message: "Button text is required" }),
-  buttonUrl: z.string().min(1, { message: "Button URL is required" }),
+  title: z.string().optional(),
+  desc: z.string().optional(),
+  icon: z.string().optional(),
+  buttonText: z.string().optional(),
+  buttonUrl: z.string().optional(),
 });
 
+
 const svcCategorySchema = z.object({
-  categoryTitle: z.string().min(2, { message: "Category title is required" }),
-  items: z.array(svcItemSchema).min(1, { message: "Add at least one item" }),
+  categoryTitle: z.string().optional(),
+  // we still want an array, but items inside can be partial
+  items: z.array(svcItemSchema).optional(),
 });
 
 const formSchema = z.object({
@@ -107,9 +109,7 @@ const formSchema = z.object({
   processItems: z
     .array(processCardSchema)
     .min(1, "Add at least one process step"),
-  servicesManager: z
-    .array(svcCategorySchema)
-    .min(1, "Add at least one category"),
+  servicesManager: z.array(svcCategorySchema).optional(),
   portfolioIds: z.array(z.string()).optional().default([]),
   clientIds: z.array(z.string()).optional().default([]),
   technologyIds: z.array(z.string()).optional().default([]),
