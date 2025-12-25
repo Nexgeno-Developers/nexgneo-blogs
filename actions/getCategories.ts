@@ -8,9 +8,11 @@ export const getCategories = async () => {
       },
     });
 
-    return categories;
+    // Ensure we return an array even if categories is null/undefined
+    return Array.isArray(categories) ? categories : [];
   } catch (error) {
-    console.log("GET_CATEGORIES", error);
+    console.error("GET_CATEGORIES", error);
+    // Return empty array on any error
     return [];
   }
 };

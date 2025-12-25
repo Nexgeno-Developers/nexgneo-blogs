@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Editor as TinyMCEEditor } from "@tinymce/tinymce-react"; // ✅ Correct import
 import type { Editor as TinyMCEInstance } from "tinymce";
 
@@ -11,23 +11,49 @@ interface TinyEditorProps {
 
 export function TinyEditor({ value, onChange }: TinyEditorProps) {
   const editorRef = useRef<TinyMCEInstance | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (editorRef.current) {
-      editorRef.current.setContent(value || "");
+      try {
+        editorRef.current.setContent(value || "");
+      } catch (err) {
+        console.error("Error setting editor content:", err);
+      }
     }
   }, [value]);
+
+  if (error) {
+    return (
+      <div className="border border-red-300 rounded p-4 bg-red-50">
+        <p className="text-red-600">Failed to load editor. Please refresh the page.</p>
+        <p className="text-sm text-red-500 mt-2">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <TinyMCEEditor
       apiKey="p56nvrhctfnrux1an0cnj7m27o86q14jk296pm1kautcr7re"
       onInit={(_evt, editor) => {
-        editorRef.current = editor;
-        editor.on("Change", () => {
-          onChange(editor.getContent());
-        });
+        try {
+          editorRef.current = editor;
+          editor.on("Change", () => {
+            onChange(editor.getContent());
+          });
+        } catch (err) {
+          console.error("Error initializing editor:", err);
+          setError(err instanceof Error ? err.message : "Unknown error");
+        }
       }}
-      value={value} // Ensure value is controlled
+      onEditorChange={(content) => {
+        try {
+          onChange(content);
+        } catch (err) {
+          console.error("Error handling editor change:", err);
+        }
+      }}
+      value={value || ""} // Ensure value is controlled
       init={{
         height: 500,
         menubar: false,
@@ -54,6 +80,12 @@ export function TinyEditor({ value, onChange }: TinyEditorProps) {
           ol { @apply list-decimal pl-5; }
           blockquote { @apply border-l-4 border-gray-500 pl-4 italic; }
         `,
+        setup: (editor) => {
+          editor.on("error", (e) => {
+            console.error("TinyMCE error:", e);
+            setError("Editor initialization failed");
+          });
+        },
       }}
     />
   );
