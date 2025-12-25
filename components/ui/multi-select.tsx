@@ -332,12 +332,12 @@ export function MultiSelect({
               className="flex items-center gap-1 pr-1"
             >
               {option.image && (
-                <Image
+                <img
                   src={option.image}
                   alt={option.label}
                   width={16}
                   height={16}
-                  className="rounded-sm"
+                  className="rounded-sm object-cover"
                 />
               )}
               <span className="text-xs">{option.label}</span>
