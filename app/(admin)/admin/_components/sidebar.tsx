@@ -16,6 +16,7 @@ import {
   Map,
   FileCode2,
   Award,
+  Star,
 } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { GrServices } from "react-icons/gr";
@@ -139,6 +140,12 @@ const Sidebar = ({ name, image }: SidebarProps) => {
           title: "Testimonials",
           path: "/admin/testimonials",
           icon: <Award />, // reuse icon; can be changed later
+        },
+        {
+          id: 14,
+          title: "Platform Ratings",
+          path: "/admin/platform-ratings",
+          icon: <Star />,
         },
       ],
     },

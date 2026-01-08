@@ -276,3 +276,12 @@ model Testimonial {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model PlatformRating {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  platform    String   @unique // "Google" or "Culth"
+  rating      Float    // Rating like 4.0, 4.5, etc.
+  reviewCount Int      // Number of reviews
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
