@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 import * as z from "zod";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 const formSchema = z.object({
   googleRating: z
@@ -112,7 +113,14 @@ export const PlatformRatingsForm: React.FC<PlatformRatingsFormProps> = ({
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-5">
           {/* Google Rating Section */}
           <div className="border rounded-lg p-6 space-y-4">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-3 mb-4">
+              <Image
+                src="/google.svg"
+                alt="Google"
+                width={32}
+                height={32}
+                className="object-contain"
+              />
               <h3 className="text-xl font-semibold">Google Ratings</h3>
               <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
             </div>
@@ -178,7 +186,14 @@ export const PlatformRatingsForm: React.FC<PlatformRatingsFormProps> = ({
 
           {/* Culth Rating Section */}
           <div className="border rounded-lg p-6 space-y-4">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-3 mb-4">
+              <Image
+                src="/clutch_icon.svg"
+                alt="Culth"
+                width={32}
+                height={32}
+                className="object-contain"
+              />
               <h3 className="text-xl font-semibold">Culth Ratings</h3>
               <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
             </div>
