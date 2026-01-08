@@ -14,6 +14,12 @@ enum UserRole {
   USER
 }
 
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+}
+
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
@@ -66,12 +72,17 @@ model Post {
   metaDesc    String
   views       Int     @default(0)
   isPublished Boolean @default(false)
+  
+  status       PostStatus @default(DRAFT)
 
   categoryId String   @db.ObjectId
   category   Category @relation(fields: [categoryId], references: [id])
 
   authorId String @db.ObjectId
   author   User   @relation(fields: [authorId], references: [id])
+
+  scheduledAt  DateTime?
+  publishedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -284,4 +295,13 @@ model PlatformRating {
   reviewCount Int      // Number of reviews
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+model VideoTestimonial {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  role      String
+  company   String
+  videoUrl  String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
 }

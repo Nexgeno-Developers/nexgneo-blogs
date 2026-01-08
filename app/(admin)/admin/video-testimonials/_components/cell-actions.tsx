@@ -8,23 +8,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Copy, Edit, Eye, MoreHorizontal, Trash, CheckIcon} from "lucide-react";
+import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { Post } from "@prisma/client";
-import Link from "next/link";
 import { AlertModal } from "@/components/modal/alert-modal";
-import ScheduleModal from "../../_components/ScheduleModel";
 
 interface CellActionsProps {
-  data: Post;
+  data: any;
 }
 
 const CellActions: React.FC<CellActionsProps> = ({ data }) => {
-  const [openSchedule, setOpenSchedule] = useState(false);
-
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -32,8 +27,8 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
   const onConfirm = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/posts/${data.id}`);
-      toast.success("Product deleted.");
+      await axios.delete(`/api/video-testimonial/${data.id}`);
+      toast.success("VideoTestimonial deleted.");
       router.refresh();
     } catch (error) {
       toast.error("Something went wrong");
@@ -41,11 +36,6 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
       setLoading(false);
       setOpen(false);
     }
-  };
-
-  const onCopy = (id: string) => {
-    navigator.clipboard.writeText(id);
-    toast.success("Post URL copied to clipboard.");
   };
 
   return (
@@ -66,43 +56,15 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() =>
-              onCopy(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${data.slug}`)
-            }
-          >
-            <Copy className="mr-2 h-4 w-4" /> Copy URL
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link
-              className="flex items-center"
-              href={`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${data.slug}`}
-              target="_blank"
-            >
-              <Eye className="mr-2 h-4 w-4" /> View
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => router.push(`/admin/posts/${data.id}`)}
+            onClick={() => router.push(`/admin/VideoTestimonials/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
-
-           <DropdownMenuItem onClick={() => setOpenSchedule(true)}>
-            <CheckIcon className="mr-2 h-4 w-4" /> Schedule Task
-          </DropdownMenuItem>
-
         </DropdownMenuContent>
       </DropdownMenu>
-
-       {/* Schedule Modal  */} {/* added this model */}
-      <ScheduleModal
-        open={openSchedule}
-        onClose={() => setOpenSchedule(false)}
-        postId={data.id}
-      />
     </>
   );
 };
