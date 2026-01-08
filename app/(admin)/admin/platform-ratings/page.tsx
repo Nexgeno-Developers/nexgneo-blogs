@@ -57,7 +57,7 @@ const PlatformRatingsPage = async () => {
               <ol className="list-decimal list-inside mt-2 space-y-2 text-sm">
                 <li>
                   <strong>Stop your development server</strong> (press Ctrl+C in
-                  the terminal where it's running)
+                  the terminal where it&apos;s running)
                 </li>
                 <li>
                   Run:{" "}
