@@ -16,6 +16,7 @@ import {
   ShieldBan,
   ShieldCheck,
   Trash,
+  CheckIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -24,12 +25,15 @@ import axios from "axios";
 import { Post } from "@prisma/client";
 import Link from "next/link";
 import { AlertModal } from "@/components/modal/alert-modal";
+import ScheduleModal from "../../_components/ScheduleModel";
 
 interface CellActionsProps {
   data: Post;
 }
 
 const CellActions: React.FC<CellActionsProps> = ({ data }) => {
+  const [openSchedule, setOpenSchedule] = useState(false);
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -49,23 +53,30 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
   };
 
   const onPublish = async () => {
-    try {
-      setLoading(true);
-      if (data.isPublished) {
-        await axios.patch(`/api/posts/${data.id}/unpublish`);
-        toast.success("Posts UnPublished");
-        router.refresh();
-      } else {
-        await axios.patch(`/api/posts/${data.id}/publish`);
-        toast.success("Posts Published");
-        router.refresh();
-      }
-    } catch (error) {
-      toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
+  try {
+    setLoading(true);
+
+    if (data.status === "SCHEDULED") {
+      toast.error("Post is scheduled and cannot be published manually");
+      return;
     }
-  };
+
+    if (data.isPublished) {
+      await axios.patch(`/api/posts/${data.id}/unpublish`);
+      toast.success("Post unpublished");
+    } else {
+      await axios.patch(`/api/posts/${data.id}/publish`);
+      toast.success("Post published");
+    }
+
+    router.refresh();
+  } catch (error) {
+    toast.error("Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
@@ -113,6 +124,11 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
+
+          <DropdownMenuItem onClick={() => setOpenSchedule(true)}>
+            <CheckIcon className="mr-2 h-4 w-4" /> Schedule Task
+          </DropdownMenuItem>
+
           <DropdownMenuItem onClick={onPublish}>
             {data.isPublished ? (
               <>
@@ -126,6 +142,12 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      {/* Schedule Modal  */} {/* added this model */}
+      <ScheduleModal
+        open={openSchedule}
+        onClose={() => setOpenSchedule(false)}
+        postId={data.id}
+      />
     </>
   );
 };

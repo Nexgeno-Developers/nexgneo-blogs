@@ -8,16 +8,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Copy, Eye, MoreHorizontal } from "lucide-react";
+import ScheduleModal from "./ScheduleModel";
+import { CheckIcon, Copy, Eye, MoreHorizontal } from "lucide-react";
 import toast from "react-hot-toast";
 import { Post } from "@prisma/client";
 import Link from "next/link";
+import { useState } from "react";
 
 interface CellActionsProps {
   data: Post;
 }
 
 const CellActions: React.FC<CellActionsProps> = ({ data }) => {
+  const [openSchedule, setOpenSchedule] = useState(false);
+  
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
     toast.success("Post URL copied to clipboard.");
@@ -41,6 +45,12 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
           >
             <Copy className="mr-2 h-4 w-4" /> Copy URL
           </DropdownMenuItem>
+           <DropdownMenuItem
+            onClick={() => setOpenSchedule(true)
+            }
+          >
+            <CheckIcon className="mr-2 h-4 w-4" /> Schedule Task
+          </DropdownMenuItem>
           <DropdownMenuItem>
             <Link
               className="flex items-center"
@@ -52,6 +62,13 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+       {/* Schedule Modal  */} {/* added this model */}
+      <ScheduleModal
+        open={openSchedule}
+        onClose={() => setOpenSchedule(false)}
+        postId={data.id}
+      />
     </>
   );
 };
